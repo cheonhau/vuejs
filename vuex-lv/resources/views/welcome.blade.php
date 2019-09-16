@@ -8,9 +8,6 @@
         
     </head>
     <body>
-        <div id="app">
-            <user-dashboard></user-dashboard>
-        </div>
+        kk
     </body>
-    <script src="/js/app.js"></script>
 </html>
