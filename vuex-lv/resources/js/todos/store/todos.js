@@ -24,6 +24,7 @@ const mutations = {
 
     [TODO_DELETE](state, id) {
         return state.todos = state.todos.filter((todo) => todo.id !== id)
+        // state.todos.splice(state.todos.indexOf(id), 1);
     }
 }
 
