@@ -1,0 +1,31 @@
+.content-form {
+    width: 90%;
+    margin: 40px auto;
+    border: 1px solid #444444;
+    box-shadow: 0px 0px 4px -1px #555555;
+    padding: 44px;
+    border-radius: 3px;
+}
+.content-form > form > div {
+    margin-bottom: 40px;
+}
+.custom-button {
+    display: flex;
+    justify-content: center;
+}
+.title-content {
+    text-align: center;
+    font-size: 30px;
+    font-family: auto;
+    margin-bottom: 54px;
+}
+.action_td i {
+    color: #ffffff;
+    background-color: #00CBFF;
+    padding: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+thead {
+    background: #A8EDFF;
+}
