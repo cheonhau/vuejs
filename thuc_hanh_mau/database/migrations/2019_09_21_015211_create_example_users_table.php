@@ -19,7 +19,7 @@ class CreateExampleUsersTable extends Migration
             $table->string('address');
             $table->string('phone');
             $table->string('email');
-            $table->number('gender');
+            $table->tinyInteger('gender');
             $table->string('image');
             $table->date('date');
             $table->timestamps();
