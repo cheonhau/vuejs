@@ -12,19 +12,20 @@ const types = {
     sidebarOpen: state => state.sidebarOpen
   }
   
-  // actions
-  const actions = {
-    toggleSidebar ({ commit, state }) {
-      commit(types.TOGGLE_SIDEBAR)
-    }
-  }
-  
   // mutations
   const mutations = {
     [types.TOGGLE_SIDEBAR] (state) {
       state.sidebarOpen = !state.sidebarOpen
     }
   }
+  
+  // actions
+  const actions = {
+    toggleSidebar ({ commit }) {
+      commit(types.TOGGLE_SIDEBAR)
+    }
+  }
+  
   
   export default {
     state,

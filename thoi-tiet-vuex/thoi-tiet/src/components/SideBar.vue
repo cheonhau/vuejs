@@ -6,6 +6,14 @@
 import { TweenMax, Power4 } from 'gsap'
 export default {
     name: 'sidebar',
+    props : {
+
+    },
+    data() {
+        return {
+            
+        }
+    },
     created() {
         // lúc này có thể can thiệp đến data nhưng chưa can thiệp được tới dom
         // thường được sử dụng để fetch data của api
@@ -37,6 +45,12 @@ export default {
     methods: {
         // nơi này sẽ viết các phương thức cần thiết
     },
+    filters: {
+
+    },
+    components:{
+        
+    }
 }
 </script>
 
