@@ -36,9 +36,9 @@
         name: 'list',
         mounted() {
             console.log(this.customers);
-            if (this.customers.length) {
-                return;
-            }
+            // if (this.customers.length) {
+            //     return;
+            // }
             
             this.$store.dispatch('getCustomers');
         },

@@ -1,9 +1,9 @@
 import Home from './components/Home.vue';
-import Login from './components/auth/Login.vue';
-import CustomersMain from './components/customers/Main.vue';
-import CustomersList from './components/customers/List.vue';
-import NewCustomer from './components/customers/New.vue';
-import Customer from './components/customers/View.vue';
+import Login from './user/components/login.vue';
+import CustomersMain from './customer/components/Main.vue';
+import CustomersList from './customer/components/List.vue';
+import NewCustomer from './customer/components/New.vue';
+import Customer from './customer/components/View.vue';
 
 export const routes = [
     {

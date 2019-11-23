@@ -1,4 +1,4 @@
-import { setAuthorization } from "./general";
+import { setAuthorization } from "../helpers/general";
 
 export function login(credentials) {
     return new Promise((res, rej) => {
@@ -8,6 +8,7 @@ export function login(credentials) {
                 res(response.data);
             })
             .catch((err) =>{
+                console.log(err);
                 rej("Wrong email or password");
             })
     })

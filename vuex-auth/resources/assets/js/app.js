@@ -3,7 +3,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import {routes} from './routes';
-import StoreData from './store';
+import StoreData from './user/module';
 import MainApp from './components/MainApp.vue';
 import {initialize} from './helpers/general';
 

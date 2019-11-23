@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import {login} from '../../helpers/auth';
+    import {login} from '../api';
 
     export default {
         name: "login",
@@ -70,4 +70,3 @@
     color: red;
 }
 </style>
-
