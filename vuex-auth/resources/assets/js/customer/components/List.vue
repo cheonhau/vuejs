@@ -35,12 +35,7 @@
     export default {
         name: 'list',
         mounted() {
-            console.log(this.customers);
-            // if (this.customers.length) {
-            //     return;
-            // }
-            
-            this.$store.dispatch('getCustomers');
+            this.$store.dispatch('actionCustomerFetch');
         },
         computed: {
             customers() {

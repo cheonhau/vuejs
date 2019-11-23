@@ -1,4 +1,4 @@
-import { getCustomerList, addCustomer, getCustomer } from './api'
+import { getCustomerList, addCustomer } from './api'
 
 const CUSTOMER_FETCH = 'customer_fetch'
 const CUSTOMER_ADD = 'customer_add'
@@ -45,13 +45,13 @@ const actions = {
         }
     },
 
-    async actionCustomerChangeStatus({ commit }, { id, status }) {
-        let response = await getCustomer(id, { status })
+    // async actionCustomerChangeStatus({ commit }, { id, status }) {
+    //     let response = await getCustomer(id, { status })
 
-        if (response.status == 200) {
-            return commit(CUSTOMER_TOGGLE_STATUS, id)
-        }
-    },
+    //     if (response.status == 200) {
+    //         return commit(CUSTOMER_TOGGLE_STATUS, id)
+    //     }
+    // },
 
     // async actionTodoDelete({ commit }, id) {
     //     let response = await apiDeleteTodo(id)

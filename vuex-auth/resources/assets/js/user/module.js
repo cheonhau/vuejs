@@ -1,16 +1,20 @@
 import { getLocalUser } from "./api";
+import { getCustomerList, addCustomer } from '../customer/api'; // customer
 
 const user = getLocalUser();
 
-export default {
-    state: {
+const CUSTOMER_FETCH = 'customer_fetch'; // customer
+const CUSTOMER_ADD = 'customer_add'; // customer
+const CUSTOMER_TOGGLE_STATUS = 'customer_toggle_status'; // customer
+
+const state =  {
         currentUser: user,
         isLoggedIn: !!user,
         loading: false,
         auth_error: null,
         customers: []
-    },
-    getters: {
+    }
+const getters = {
         isLoading(state) {
             return state.loading;
         },
@@ -26,8 +30,8 @@ export default {
         customers(state) {
             return state.customers;
         }
-    },
-    mutations: {
+    }
+const mutations = {
         login(state) {
             state.loading = true;
             state.auth_error = null;
@@ -51,9 +55,22 @@ export default {
         },
         updateCustomers(state, payload) {
             state.customers = payload;
-        }
-    },
-    actions: {
+        },
+        // customer
+        [CUSTOMER_FETCH](state, customers) {
+            return state.customers = customers
+        },
+    
+        [CUSTOMER_ADD](state, customer) {
+            return state.customers = [customer, ...state.customers]
+        },
+    
+        [CUSTOMER_TOGGLE_STATUS](state, id) {
+            return state.customers = state.customers.map((customer) => customer.id === id ? { ...customer, status: !customer.status } : customer)
+        },
+        // customer
+    }
+const actions = {
         login(context) {
             context.commit("login");
         },
@@ -62,6 +79,28 @@ export default {
             .then((response) => {
                 context.commit('updateCustomers', response.data.customers);
             })
-        }
+        },
+        // customer
+        async actionCustomerFetch({ commit }) {
+            let response = await getCustomerList()
+            console.log(response)
+            // if (response.status == 200 ) {
+                return commit(CUSTOMER_FETCH, response.data.customers)
+            // }
+        },
+    
+        async actionCustomerAdd({ commit }, customer) {
+            let response = await addCustomer(customer)
+    
+            // if (response.status == 200) {
+                return commit(CUSTOMER_ADD, response.data)
+            // }
+        },
+        // customer
     }
-};
+export default {
+    state,
+    getters,
+    actions,
+    mutations
+}
