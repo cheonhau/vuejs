@@ -33,28 +33,18 @@
 
 <script>
     export default {
-        name: 'view',
-        created() {
-            if (this.customers.length) {
-                this.customer = this.customers.find((customer) => customer.id == this.$route.params.id);
-            } else {
-                axios.get(`/api/customers/${this.$route.params.id}`)
-                    .then((response) => {
-                        this.customer = response.data.customer
-                    });
+        name: 'view_customer',
+        mounted() {
+            let customers = this.$store.getters.customers;
+            if ( !customers.length ) {
+                this.$store.dispatch('actionCustomerFetch');
             }
         },
-        data() {
-            return {
-                customer: null
-            };
-        },
         computed: {
-            currentUser() {
-                return this.$store.getters.currentUser;
-            },
-            customers() {
-                return this.$store.getters.customers;
+            customer() {
+                let customers = this.$store.getters.customers;
+                
+                return customers.find((customer) => customer.id == this.$route.params.id);
             }
         }
     }

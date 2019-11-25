@@ -35,7 +35,10 @@
     export default {
         name: 'list',
         mounted() {
-            this.$store.dispatch('actionCustomerFetch');
+            let customers = this.$store.getters.customers;
+            if ( !customers.length ) {
+                this.$store.dispatch('actionCustomerFetch');
+            }
         },
         computed: {
             customers() {

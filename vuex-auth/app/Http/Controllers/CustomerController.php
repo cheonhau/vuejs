@@ -21,7 +21,7 @@ class CustomerController extends Controller
         $customer = Customer::whereId($id)->first();
 
         return response()->json([
-            "customer" => $customers
+            "customer" => $customer
         ], 200);
     }
 

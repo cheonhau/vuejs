@@ -80,12 +80,15 @@
                     return;
                 }
 
-                axios.post('/api/customers/new', this.$data.customer)
-                    .then((response) => {
-                        this.$router.push('/customers');
-                    }).catch ( (err) => {
-                        this.errors = err;
-                    });
+                this.$store.dispatch('actionCustomerAdd', this.$data.customer);
+                this.$router.push('/customers');
+
+                // axios.post('/api/customers/new', this.$data.customer)
+                //     .then((response) => {
+                //         this.$router.push('/customers');
+                //     }).catch ( (err) => {
+                //         this.errors = err;
+                //     });
             },
             getConstraints() {
                 return {

@@ -5,10 +5,15 @@ export function getCustomerList () {
     .catch(error => error)
     // });
 }
-export function addCustomer () {
+export function addCustomer (customer) {
     // return new Promise ( (res, rej) => {
-    return axios.post('/api/customers/new', this.$data.customer)
+    return axios.post('/api/customers/new', customer)
         .then(response => response)
         .catch(error => error)
     // })
+}
+export function getCustomer (id) {
+    return axios.get(`/api/customers/${id}`)
+        .then(response => response)
+        .catch(error => error)
 }

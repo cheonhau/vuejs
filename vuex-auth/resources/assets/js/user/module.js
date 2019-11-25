@@ -1,5 +1,5 @@
 import { getLocalUser } from "./api";
-import { getCustomerList, addCustomer } from '../customer/api'; // customer
+import { getCustomerList, addCustomer, getCustomer } from '../customer/api'; // customer
 
 const user = getLocalUser();
 
@@ -66,7 +66,7 @@ const mutations = {
         },
     
         [CUSTOMER_TOGGLE_STATUS](state, id) {
-            return state.customers = state.customers.map((customer) => customer.id === id ? { ...customer, status: !customer.status } : customer)
+            return state.customers = state.customers.find((customer) => customer.id == id);
         },
         // customer
     }
@@ -83,7 +83,6 @@ const actions = {
         // customer
         async actionCustomerFetch({ commit }) {
             let response = await getCustomerList()
-            console.log(response)
             // if (response.status == 200 ) {
                 return commit(CUSTOMER_FETCH, response.data.customers)
             // }
@@ -93,9 +92,16 @@ const actions = {
             let response = await addCustomer(customer)
     
             // if (response.status == 200) {
-                return commit(CUSTOMER_ADD, response.data)
+                return commit(CUSTOMER_ADD, response.data.customer)
             // }
         },
+        async actionCustomerChangeStatus({ commit }, id) {
+            return commit(CUSTOMER_TOGGLE_STATUS, id)
+        },
+        async actionCustomerGet({ commit }, id) {
+            let response = await getCustomer(id);
+            return commit(CUSTOMER_FETCH, response.data.customer)
+        }
         // customer
     }
 export default {
