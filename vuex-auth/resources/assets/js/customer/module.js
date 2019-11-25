@@ -1,15 +1,22 @@
-import { getCustomerList, addCustomer } from './api'
+import { getCustomerList, addCustomer, getCustomer } from './api'
 
-const CUSTOMER_FETCH = 'customer_fetch'
-const CUSTOMER_ADD = 'customer_add'
-const CUSTOMER_TOGGLE_STATUS = 'customer_toggle_status'
+const CUSTOMER_FETCH = 'customer_fetch';
+const CUSTOMER_ADD = 'customer_add';
+const CUSTOMER_TOGGLE_STATUS = 'customer_toggle_status';
 // const TODO_DELETE = 'todo_delete'
 
 const state = {
     customers: []
 }
-
+const getters = {
+    customers(state) {
+        return state.customers;
+    }
+}
 const mutations = {
+    updateCustomers(state, payload) {
+        state.customers = payload;
+    },
     [CUSTOMER_FETCH](state, customers) {
         return state.customers = customers
     },
@@ -19,8 +26,12 @@ const mutations = {
     },
 
     [CUSTOMER_TOGGLE_STATUS](state, id) {
-        return state.customers = state.customers.map((customer) => customer.id === id ? { ...customer, status: !customer.status } : customer)
+        return state.customers = state.customers.find((customer) => customer.id == id);
     },
+
+    // [CUSTOMER_TOGGLE_STATUS](state, id) {
+    //     return state.customers = state.customers.map((customer) => customer.id === id ? { ...customer, status: !customer.status } : customer)
+    // },
 
     // [TODO_DELETE](state, id) {
     //     return state.customers = state.customers.filter((todo) => todo.id !== id)
@@ -29,21 +40,34 @@ const mutations = {
 }
 
 const actions = {
+    getCustomers(context) {
+        axios.get('/api/customers')
+        .then((response) => {
+            context.commit('updateCustomers', response.data.customers);
+        })
+    },
+    // customer
     async actionCustomerFetch({ commit }) {
         let response = await getCustomerList()
-
-        if (response.status == 200 ) {
-            return commit(CUSTOMER_FETCH, response.data)
-        }
+        // if (response.status == 200 ) {
+            return commit(CUSTOMER_FETCH, response.data.customers)
+        // }
     },
 
     async actionCustomerAdd({ commit }, customer) {
         let response = await addCustomer(customer)
 
-        if (response.status == 200) {
-            return commit(CUSTOMER_ADD, response.data)
-        }
+        // if (response.status == 200) {
+            return commit(CUSTOMER_ADD, response.data.customer)
+        // }
     },
+    async actionCustomerChangeStatus({ commit }, id) {
+        return commit(CUSTOMER_TOGGLE_STATUS, id)
+    },
+    async actionCustomerGet({ commit }, id) {
+        let response = await getCustomer(id);
+        return commit(CUSTOMER_FETCH, response.data.customer)
+    }
 
     // async actionCustomerChangeStatus({ commit }, { id, status }) {
     //     let response = await getCustomer(id, { status })
@@ -64,6 +88,7 @@ const actions = {
 
 export default {
     state,
+    getters,
     actions,
     mutations
 }

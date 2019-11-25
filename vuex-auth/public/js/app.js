@@ -12020,7 +12020,6 @@ function login(credentials) {
 
 function getLocalUser() {
     var userStr = localStorage.getItem("user");
-
     if (!userStr) {
         return null;
     }
@@ -12040,8 +12039,8 @@ function initialize(store, router) {
         var requiresAuth = to.matched.some(function (record) {
             return record.meta.requiresAuth;
         });
-        var currentUser = store.state.currentUser;
-
+        // const currentUser = store.state.currentUser;
+        var currentUser = store.state.StoreData.currentUser;
         if (requiresAuth && !currentUser) {
             next('/login');
         } else if (to.path == '/login' && currentUser) {
@@ -12156,12 +12155,12 @@ __webpack_require__(21);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
 
-var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store(__WEBPACK_IMPORTED_MODULE_4__user_module__["a" /* default */]);
-// const store = new Vuex.Store({
-//     modules : {
-//         StoreData
-//     }
-// });
+// const store = new Vuex.Store(StoreData);
+var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
+    modules: {
+        StoreData: __WEBPACK_IMPORTED_MODULE_4__user_module__["a" /* default */], CustomerData: __WEBPACK_IMPORTED_MODULE_5__customer_module__["a" /* default */]
+    }
+});
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     routes: __WEBPACK_IMPORTED_MODULE_3__routes__["a" /* routes */],
@@ -56063,35 +56062,16 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_api__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(14);
 
 
-var _mutations;
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-
- // customer
-
-var user = Object(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* getLocalUser */])();
-
-var CUSTOMER_FETCH = 'customer_fetch'; // customer
-var CUSTOMER_ADD = 'customer_add'; // customer
-var CUSTOMER_TOGGLE_STATUS = 'customer_toggle_status'; // customer
+var user = Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* getLocalUser */])();
 
 var state = {
     currentUser: user,
     isLoggedIn: !!user,
     loading: false,
-    auth_error: null,
-    customers: []
+    auth_error: null
 };
 var getters = {
     isLoading: function isLoading(state) {
@@ -56105,12 +56085,9 @@ var getters = {
     },
     authError: function authError(state) {
         return state.auth_error;
-    },
-    customers: function customers(state) {
-        return state.customers;
     }
 };
-var mutations = (_mutations = {
+var mutations = {
     login: function login(state) {
         state.loading = true;
         state.auth_error = null;
@@ -56131,142 +56108,12 @@ var mutations = (_mutations = {
         localStorage.removeItem("user");
         state.isLoggedIn = false;
         state.currentUser = null;
-    },
-    updateCustomers: function updateCustomers(state, payload) {
-        state.customers = payload;
     }
-}, _defineProperty(_mutations, CUSTOMER_FETCH, function (state, customers) {
-    return state.customers = customers;
-}), _defineProperty(_mutations, CUSTOMER_ADD, function (state, customer) {
-    return state.customers = [customer].concat(_toConsumableArray(state.customers));
-}), _defineProperty(_mutations, CUSTOMER_TOGGLE_STATUS, function (state, id) {
-    return state.customers = state.customers.find(function (customer) {
-        return customer.id == id;
-    });
-}), _mutations);
+};
 var actions = {
     login: function login(context) {
         context.commit("login");
-    },
-    getCustomers: function getCustomers(context) {
-        axios.get('/api/customers').then(function (response) {
-            context.commit('updateCustomers', response.data.customers);
-        });
-    },
-
-    // customer
-    actionCustomerFetch: function () {
-        var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(_ref) {
-            var commit = _ref.commit;
-            var response;
-            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            _context.next = 2;
-                            return Object(__WEBPACK_IMPORTED_MODULE_2__customer_api__["c" /* getCustomerList */])();
-
-                        case 2:
-                            response = _context.sent;
-                            return _context.abrupt('return', commit(CUSTOMER_FETCH, response.data.customers));
-
-                        case 4:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, this);
-        }));
-
-        function actionCustomerFetch(_x) {
-            return _ref2.apply(this, arguments);
-        }
-
-        return actionCustomerFetch;
-    }(),
-    actionCustomerAdd: function () {
-        var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(_ref3, customer) {
-            var commit = _ref3.commit;
-            var response;
-            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
-                while (1) {
-                    switch (_context2.prev = _context2.next) {
-                        case 0:
-                            _context2.next = 2;
-                            return Object(__WEBPACK_IMPORTED_MODULE_2__customer_api__["a" /* addCustomer */])(customer);
-
-                        case 2:
-                            response = _context2.sent;
-                            return _context2.abrupt('return', commit(CUSTOMER_ADD, response.data.customer));
-
-                        case 4:
-                        case 'end':
-                            return _context2.stop();
-                    }
-                }
-            }, _callee2, this);
-        }));
-
-        function actionCustomerAdd(_x2, _x3) {
-            return _ref4.apply(this, arguments);
-        }
-
-        return actionCustomerAdd;
-    }(),
-    actionCustomerChangeStatus: function () {
-        var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(_ref5, id) {
-            var commit = _ref5.commit;
-            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
-                while (1) {
-                    switch (_context3.prev = _context3.next) {
-                        case 0:
-                            return _context3.abrupt('return', commit(CUSTOMER_TOGGLE_STATUS, id));
-
-                        case 1:
-                        case 'end':
-                            return _context3.stop();
-                    }
-                }
-            }, _callee3, this);
-        }));
-
-        function actionCustomerChangeStatus(_x4, _x5) {
-            return _ref6.apply(this, arguments);
-        }
-
-        return actionCustomerChangeStatus;
-    }(),
-    actionCustomerGet: function () {
-        var _ref8 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(_ref7, id) {
-            var commit = _ref7.commit;
-            var response;
-            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
-                while (1) {
-                    switch (_context4.prev = _context4.next) {
-                        case 0:
-                            _context4.next = 2;
-                            return Object(__WEBPACK_IMPORTED_MODULE_2__customer_api__["b" /* getCustomer */])(id);
-
-                        case 2:
-                            response = _context4.sent;
-                            return _context4.abrupt('return', commit(CUSTOMER_FETCH, response.data.customer));
-
-                        case 4:
-                        case 'end':
-                            return _context4.stop();
-                    }
-                }
-            }, _callee4, this);
-        }));
-
-        function actionCustomerGet(_x6, _x7) {
-            return _ref8.apply(this, arguments);
-        }
-
-        return actionCustomerGet;
-    }()
-    // customer
-
+    }
 };
 /* harmony default export */ __webpack_exports__["a"] = ({
     state: state,
@@ -57061,8 +56908,6 @@ if (hadRuntime) {
 
 var _mutations;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -57079,18 +56924,33 @@ var CUSTOMER_TOGGLE_STATUS = 'customer_toggle_status';
 var state = {
     customers: []
 };
-
-var mutations = (_mutations = {}, _defineProperty(_mutations, CUSTOMER_FETCH, function (state, customers) {
+var getters = {
+    customers: function customers(state) {
+        return state.customers;
+    }
+};
+var mutations = (_mutations = {
+    updateCustomers: function updateCustomers(state, payload) {
+        state.customers = payload;
+    }
+}, _defineProperty(_mutations, CUSTOMER_FETCH, function (state, customers) {
     return state.customers = customers;
 }), _defineProperty(_mutations, CUSTOMER_ADD, function (state, customer) {
     return state.customers = [customer].concat(_toConsumableArray(state.customers));
 }), _defineProperty(_mutations, CUSTOMER_TOGGLE_STATUS, function (state, id) {
-    return state.customers = state.customers.map(function (customer) {
-        return customer.id === id ? _extends({}, customer, { status: !customer.status }) : customer;
+    return state.customers = state.customers.find(function (customer) {
+        return customer.id == id;
     });
 }), _mutations);
 
 var actions = {
+    getCustomers: function getCustomers(context) {
+        axios.get('/api/customers').then(function (response) {
+            context.commit('updateCustomers', response.data.customers);
+        });
+    },
+
+    // customer
     actionCustomerFetch: function () {
         var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(_ref) {
             var commit = _ref.commit;
@@ -57104,15 +56964,9 @@ var actions = {
 
                         case 2:
                             response = _context.sent;
+                            return _context.abrupt('return', commit(CUSTOMER_FETCH, response.data.customers));
 
-                            if (!(response.status == 200)) {
-                                _context.next = 5;
-                                break;
-                            }
-
-                            return _context.abrupt('return', commit(CUSTOMER_FETCH, response.data));
-
-                        case 5:
+                        case 4:
                         case 'end':
                             return _context.stop();
                     }
@@ -57139,15 +56993,9 @@ var actions = {
 
                         case 2:
                             response = _context2.sent;
+                            return _context2.abrupt('return', commit(CUSTOMER_ADD, response.data.customer));
 
-                            if (!(response.status == 200)) {
-                                _context2.next = 5;
-                                break;
-                            }
-
-                            return _context2.abrupt('return', commit(CUSTOMER_ADD, response.data));
-
-                        case 5:
+                        case 4:
                         case 'end':
                             return _context2.stop();
                     }
@@ -57160,11 +57008,81 @@ var actions = {
         }
 
         return actionCustomerAdd;
+    }(),
+    actionCustomerChangeStatus: function () {
+        var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(_ref5, id) {
+            var commit = _ref5.commit;
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+                while (1) {
+                    switch (_context3.prev = _context3.next) {
+                        case 0:
+                            return _context3.abrupt('return', commit(CUSTOMER_TOGGLE_STATUS, id));
+
+                        case 1:
+                        case 'end':
+                            return _context3.stop();
+                    }
+                }
+            }, _callee3, this);
+        }));
+
+        function actionCustomerChangeStatus(_x4, _x5) {
+            return _ref6.apply(this, arguments);
+        }
+
+        return actionCustomerChangeStatus;
+    }(),
+    actionCustomerGet: function () {
+        var _ref8 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(_ref7, id) {
+            var commit = _ref7.commit;
+            var response;
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+                while (1) {
+                    switch (_context4.prev = _context4.next) {
+                        case 0:
+                            _context4.next = 2;
+                            return Object(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* getCustomer */])(id);
+
+                        case 2:
+                            response = _context4.sent;
+                            return _context4.abrupt('return', commit(CUSTOMER_FETCH, response.data.customer));
+
+                        case 4:
+                        case 'end':
+                            return _context4.stop();
+                    }
+                }
+            }, _callee4, this);
+        }));
+
+        function actionCustomerGet(_x6, _x7) {
+            return _ref8.apply(this, arguments);
+        }
+
+        return actionCustomerGet;
     }()
+
+    // async actionCustomerChangeStatus({ commit }, { id, status }) {
+    //     let response = await getCustomer(id, { status })
+
+    //     if (response.status == 200) {
+    //         return commit(CUSTOMER_TOGGLE_STATUS, id)
+    //     }
+    // },
+
+    // async actionTodoDelete({ commit }, id) {
+    //     let response = await apiDeleteTodo(id)
+
+    //     if (response.status == 200) {
+    //         return commit(TODO_DELETE, id)
+    //     }
+    // }
+
 };
 
-/* unused harmony default export */ var _unused_webpack_default_export = ({
+/* harmony default export */ __webpack_exports__["a"] = ({
     state: state,
+    getters: getters,
     actions: actions,
     mutations: mutations
 });

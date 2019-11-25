@@ -11,12 +11,12 @@ import {initialize} from './helpers/general';
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
-const store = new Vuex.Store(StoreData);
-// const store = new Vuex.Store({
-//     modules : {
-//         StoreData
-//     }
-// });
+// const store = new Vuex.Store(StoreData);
+const store = new Vuex.Store({
+    modules : {
+        StoreData, CustomerData
+    }
+});
 
 const router = new VueRouter({
     routes,

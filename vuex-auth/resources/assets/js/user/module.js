@@ -1,18 +1,14 @@
 import { getLocalUser } from "./api";
-import { getCustomerList, addCustomer, getCustomer } from '../customer/api'; // customer
 
 const user = getLocalUser();
 
-const CUSTOMER_FETCH = 'customer_fetch'; // customer
-const CUSTOMER_ADD = 'customer_add'; // customer
-const CUSTOMER_TOGGLE_STATUS = 'customer_toggle_status'; // customer
+
 
 const state =  {
         currentUser: user,
         isLoggedIn: !!user,
         loading: false,
         auth_error: null,
-        customers: []
     }
 const getters = {
         isLoading(state) {
@@ -26,9 +22,6 @@ const getters = {
         },
         authError(state) {
             return state.auth_error;
-        },
-        customers(state) {
-            return state.customers;
         }
     }
 const mutations = {
@@ -52,57 +45,12 @@ const mutations = {
             localStorage.removeItem("user");
             state.isLoggedIn = false;
             state.currentUser = null;
-        },
-        updateCustomers(state, payload) {
-            state.customers = payload;
-        },
-        // customer
-        [CUSTOMER_FETCH](state, customers) {
-            return state.customers = customers
-        },
-    
-        [CUSTOMER_ADD](state, customer) {
-            return state.customers = [customer, ...state.customers]
-        },
-    
-        [CUSTOMER_TOGGLE_STATUS](state, id) {
-            return state.customers = state.customers.find((customer) => customer.id == id);
-        },
-        // customer
+        }
     }
 const actions = {
         login(context) {
             context.commit("login");
-        },
-        getCustomers(context) {
-            axios.get('/api/customers')
-            .then((response) => {
-                context.commit('updateCustomers', response.data.customers);
-            })
-        },
-        // customer
-        async actionCustomerFetch({ commit }) {
-            let response = await getCustomerList()
-            // if (response.status == 200 ) {
-                return commit(CUSTOMER_FETCH, response.data.customers)
-            // }
-        },
-    
-        async actionCustomerAdd({ commit }, customer) {
-            let response = await addCustomer(customer)
-    
-            // if (response.status == 200) {
-                return commit(CUSTOMER_ADD, response.data.customer)
-            // }
-        },
-        async actionCustomerChangeStatus({ commit }, id) {
-            return commit(CUSTOMER_TOGGLE_STATUS, id)
-        },
-        async actionCustomerGet({ commit }, id) {
-            let response = await getCustomer(id);
-            return commit(CUSTOMER_FETCH, response.data.customer)
         }
-        // customer
     }
 export default {
     state,
