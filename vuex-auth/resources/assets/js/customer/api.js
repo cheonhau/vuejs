@@ -9,7 +9,10 @@ export function addCustomer (customer) {
     // return new Promise ( (res, rej) => {
     return axios.post('/api/customers/new', customer)
         .then(response => response)
-        .catch(error => error)
+        .catch(error => {
+            console.log(error)
+            return error;
+        })
     // })
 }
 export function getCustomer (id) {

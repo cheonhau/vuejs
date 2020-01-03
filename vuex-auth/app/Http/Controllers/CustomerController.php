@@ -31,5 +31,8 @@ class CustomerController extends Controller
         return response()->json([
             "customer" => $customer
         ], 200);
+        // return response()->json([
+        //     "customer" => "nothing to true"
+        // ], 400);
     }
 }

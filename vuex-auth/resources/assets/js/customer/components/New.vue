@@ -63,12 +63,13 @@
             };
         },
         computed: {
+            // có vẻ hơi dư thừa đoạn này xxx 
             currentUser() {
                 return this.$store.getters.currentUser;
             }
         },
         methods: {
-            add() {
+            async add() {
                 this.errors = null;
 
                 const constraints = this.getConstraints();
@@ -79,10 +80,18 @@
                     this.errors = errors;
                     return;
                 }
-
-                this.$store.dispatch('actionCustomerAdd', this.$data.customer);
-                this.$router.push('/customers');
-
+                var result_add;
+                try {
+                    result_add = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
+                    // this.$router.push('/customers');
+                } catch (error) {
+                    console.log(error);
+                }
+                console.log(result_add);
+                
+                // .catch((error) => {
+                //         this.$store.commit("loginFailed", {error});
+                //     });
                 // axios.post('/api/customers/new', this.$data.customer)
                 //     .then((response) => {
                 //         this.$router.push('/customers');

@@ -34,7 +34,8 @@
 <script>
     export default {
         name: 'list',
-        mounted() {
+        created() {
+            // kiểm tra xem có rỗng hay không 
             let customers = this.$store.getters.customers;
             if ( !customers.length ) {
                 this.$store.dispatch('actionCustomerFetch');

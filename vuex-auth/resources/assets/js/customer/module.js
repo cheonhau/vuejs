@@ -48,25 +48,38 @@ const actions = {
     },
     // customer
     async actionCustomerFetch({ commit }) {
-        let response = await getCustomerList()
-        // if (response.status == 200 ) {
-            return commit(CUSTOMER_FETCH, response.data.customers)
-        // }
+        try {
+            let response = await getCustomerList()
+            // if (response.status == 200 ) {
+                return commit(CUSTOMER_FETCH, response.data.customers)
+            // }
+        } catch (error) {
+            return error;
+        }
     },
 
     async actionCustomerAdd({ commit }, customer) {
-        let response = await addCustomer(customer)
-
-        // if (response.status == 200) {
-            return commit(CUSTOMER_ADD, response.data.customer)
-        // }
+        try {
+            let response = await addCustomer(customer);
+            console.log(response)
+            commit(CUSTOMER_ADD, response.data.customer);
+            return response;
+        } catch (error) {
+            console.log(error)
+            return error;
+        }
     },
     async actionCustomerChangeStatus({ commit }, id) {
         return commit(CUSTOMER_TOGGLE_STATUS, id)
     },
     async actionCustomerGet({ commit }, id) {
-        let response = await getCustomer(id);
-        return commit(CUSTOMER_FETCH, response.data.customer)
+        try {
+            let response = await getCustomer(id);
+            commit(CUSTOMER_FETCH, response.data.customer);
+            return response;
+        } catch (error) {
+            return error;
+        }
     }
 
     // async actionCustomerChangeStatus({ commit }, { id, status }) {
