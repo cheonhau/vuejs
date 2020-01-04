@@ -59,15 +59,13 @@ const actions = {
     },
 
     async actionCustomerAdd({ commit }, customer) {
-        try {
-            let response = await addCustomer(customer);
-            console.log(response)
+        let response = await addCustomer(customer);
+        console.log(response);
+        if ( response.data ) {
             commit(CUSTOMER_ADD, response.data.customer);
-            return response;
-        } catch (error) {
-            console.log(error)
-            return error;
         }
+        
+        return response;
     },
     async actionCustomerChangeStatus({ commit }, id) {
         return commit(CUSTOMER_TOGGLE_STATUS, id)

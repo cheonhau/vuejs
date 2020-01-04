@@ -3,22 +3,13 @@ export function initialize(store, router) {
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
         // const currentUser = store.state.currentUser;
         const currentUser = store.state.StoreData.currentUser;
-        if(requiresAuth && !currentUser) {
+        if(requiresAuth && !currentUser) { // page need login 
             next('/login');
         } else if(to.path == '/login' && currentUser) {
             next('/');
         } else {
             next();
         }
-    });
-    
-    axios.interceptors.response.use(null, (error) => {
-        if (error.resposne.status == 401) {
-            store.commit('logout');
-            router.push('/login');
-        }
-
-        return Promise.reject(error);
     });
 
     if (store.getters.currentUser) {

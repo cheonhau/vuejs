@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     </head>
     <body>
+        @include('_partials.loading')
         <div id="app">
             <main-app/>
         </div>

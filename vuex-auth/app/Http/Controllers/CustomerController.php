@@ -26,13 +26,19 @@ class CustomerController extends Controller
     }
 
     public function new ( CreateCustomerRequest $request ) {
-        $customer = Customer::create( $request->only(["name", "email", "phone", "website"]) );
+        // $customer = Customer::create( $request->only(["name", "email", "phone", "website"]) );
 
-        return response()->json([
-            "customer" => $customer
-        ], 200);
         // return response()->json([
-        //     "customer" => "nothing to true"
-        // ], 400);
+        //     "data" => [
+        //         "customer" => $customer
+        //     ],
+        //     "errors" => []
+        // ], 200);
+        return response()->json([
+            "data" => [],
+            "errors" => [
+                "message" => "nothing to true"
+            ]
+        ], 400);
     }
 }

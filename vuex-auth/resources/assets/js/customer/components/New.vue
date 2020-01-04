@@ -72,32 +72,19 @@
             async add() {
                 this.errors = null;
 
-                const constraints = this.getConstraints();
+                // const constraints = this.getConstraints();
 
-                const errors = validate(this.$data.customer, constraints);
+                // const errors = validate(this.$data.customer, constraints);
 
-                if(errors) {
-                    this.errors = errors;
-                    return;
-                }
+                // if(errors) {
+                //     this.errors = errors;
+                //     return;
+                // }
                 var result_add;
-                try {
-                    result_add = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
-                    // this.$router.push('/customers');
-                } catch (error) {
-                    console.log(error);
-                }
+                result_add = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
+                // this.$router.push('/customers');
                 console.log(result_add);
                 
-                // .catch((error) => {
-                //         this.$store.commit("loginFailed", {error});
-                //     });
-                // axios.post('/api/customers/new', this.$data.customer)
-                //     .then((response) => {
-                //         this.$router.push('/customers');
-                //     }).catch ( (err) => {
-                //         this.errors = err;
-                //     });
             },
             getConstraints() {
                 return {

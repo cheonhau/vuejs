@@ -12042,21 +12042,13 @@ function initialize(store, router) {
         // const currentUser = store.state.currentUser;
         var currentUser = store.state.StoreData.currentUser;
         if (requiresAuth && !currentUser) {
+            // page need login 
             next('/login');
         } else if (to.path == '/login' && currentUser) {
             next('/');
         } else {
             next();
         }
-    });
-
-    axios.interceptors.response.use(null, function (error) {
-        if (error.resposne.status == 401) {
-            store.commit('logout');
-            router.push('/login');
-        }
-
-        return Promise.reject(error);
     });
 
     if (store.getters.currentUser) {
@@ -12157,9 +12149,38 @@ try {
     __webpack_require__(22);
 } catch (e) {}
 
+// https://github.com/axios/axios
+
 window.axios = __webpack_require__(24);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    var error_current = error.response;
+    console.log(error_current);
+    if (typeof error_current.data.errors !== 'undefined') {
+        var message = "";
+        if (typeof error_current.data.errors.message !== 'undefined') {
+            message = error_current.data.errors.message;
+        } else if (typeof error_current.data.message !== 'undefined') {
+            message = error_current.data.message;
+        }
+        return {
+            data: {},
+            errors: message
+        };
+    } else if (error_current.status === 401) {
+        // đoạn này sau này phải lấy được href trước khi logout rồi sau khi login redirect tới trang đó, 
+        // cần tạo một function logout riêng, không dính tới user vì cần sử dụng một vài nơi khác như ở đây
+        localStorage.removeItem("user");
+        window.location.href = '/login';
+    } else {
+        console.log(error.response);
+    }
+    // return Promise.reject(error);
+});
 
 /***/ }),
 /* 21 */
@@ -54363,59 +54384,36 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     methods: {
         add: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-                var constraints, errors, result_add;
+                var result_add;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 this.errors = null;
 
-                                constraints = this.getConstraints();
-                                errors = __WEBPACK_IMPORTED_MODULE_1_validate_js___default()(this.$data.customer, constraints);
+                                // const constraints = this.getConstraints();
 
-                                if (!errors) {
-                                    _context.next = 6;
-                                    break;
-                                }
+                                // const errors = validate(this.$data.customer, constraints);
 
-                                this.errors = errors;
-                                return _context.abrupt('return');
-
-                            case 6:
-                                _context.prev = 6;
-                                _context.next = 9;
+                                // if(errors) {
+                                //     this.errors = errors;
+                                //     return;
+                                // }
+                                _context.next = 3;
                                 return this.$store.dispatch('actionCustomerAdd', this.$data.customer);
 
-                            case 9:
+                            case 3:
                                 result_add = _context.sent;
-                                _context.next = 15;
-                                break;
 
-                            case 12:
-                                _context.prev = 12;
-                                _context.t0 = _context['catch'](6);
-
-                                console.log(_context.t0);
-
-                            case 15:
+                                // this.$router.push('/customers');
                                 console.log(result_add);
 
-                                // .catch((error) => {
-                                //         this.$store.commit("loginFailed", {error});
-                                //     });
-                                // axios.post('/api/customers/new', this.$data.customer)
-                                //     .then((response) => {
-                                //         this.$router.push('/customers');
-                                //     }).catch ( (err) => {
-                                //         this.errors = err;
-                                //     });
-
-                            case 16:
+                            case 5:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[6, 12]]);
+                }, _callee, this);
             }));
 
             function add() {
@@ -57009,30 +57007,25 @@ var actions = {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
                         case 0:
-                            _context2.prev = 0;
-                            _context2.next = 3;
+                            _context2.next = 2;
                             return Object(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* addCustomer */])(customer);
 
-                        case 3:
+                        case 2:
                             response = _context2.sent;
 
                             console.log(response);
-                            commit(CUSTOMER_ADD, response.data.customer);
+                            if (response.data) {
+                                commit(CUSTOMER_ADD, response.data.customer);
+                            }
+
                             return _context2.abrupt('return', response);
 
-                        case 9:
-                            _context2.prev = 9;
-                            _context2.t0 = _context2['catch'](0);
-
-                            console.log(_context2.t0);
-                            return _context2.abrupt('return', _context2.t0);
-
-                        case 13:
+                        case 6:
                         case 'end':
                             return _context2.stop();
                     }
                 }
-            }, _callee2, this, [[0, 9]]);
+            }, _callee2, this);
         }));
 
         function actionCustomerAdd(_x2, _x3) {
@@ -57149,7 +57142,6 @@ function addCustomer(customer) {
     return axios.post('/api/customers/new', customer).then(function (response) {
         return response;
     }).catch(function (error) {
-        console.log(error);
         return error;
     });
     // })
