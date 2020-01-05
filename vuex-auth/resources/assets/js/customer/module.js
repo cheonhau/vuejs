@@ -64,7 +64,7 @@ const actions = {
         if ( response.data ) {
             commit(CUSTOMER_ADD, response.data.customer);
         }
-        
+
         return response;
     },
     async actionCustomerChangeStatus({ commit }, id) {

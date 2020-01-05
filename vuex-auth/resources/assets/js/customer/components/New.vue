@@ -63,7 +63,7 @@
             };
         },
         computed: {
-            // có vẻ hơi dư thừa đoạn này xxx 
+            // có vẻ hơi dư thừa đoạn này xxx
             currentUser() {
                 return this.$store.getters.currentUser;
             }
@@ -72,19 +72,24 @@
             async add() {
                 this.errors = null;
 
-                // const constraints = this.getConstraints();
+                const constraints = this.getConstraints();
 
-                // const errors = validate(this.$data.customer, constraints);
+                const errors = validate(this.$data.customer, constraints);
 
-                // if(errors) {
-                //     this.errors = errors;
-                //     return;
-                // }
+                if(errors) {
+                    this.errors = errors;
+                    return;
+                }
+                this.$store.dispatch('togger_loadding');
                 var result_add;
                 result_add = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
-                // this.$router.push('/customers');
-                console.log(result_add);
-                
+
+                this.$store.dispatch('togger_loadding');
+                if ( result_add.errors.length > 0 ) {
+                    alert(result_add.errors);
+                } else {
+                    this.$router.push('/customers');
+                }
             },
             getConstraints() {
                 return {

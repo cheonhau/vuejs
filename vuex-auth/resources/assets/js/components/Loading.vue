@@ -1,13 +1,28 @@
-<div class="container-loading">
-    <section>
-        <div class="loader loader-1">
-            <div class="loader-outter"></div>
-            <div class="loader-inner"></div>
-        </div>
-    </section>
-</div>
+<template>
+    <div id="container-loading" ref="loading">
+        <section>
+            <div class="loader loader-1">
+                <div class="loader-outter"></div>
+                <div class="loader-inner"></div>
+            </div>
+        </section>
+    </div>
+</template>
+<script>
+export default {
+    name : 'loading',
+    data() {
+        return {
+            loading : []
+        }
+    },
+    mounted() {
+        console.log(this.$refs.loading);
+    },
+}
+</script>
 <style>
-.container-loading {
+#container-loading {
     background-color: #000000;
     width: 100%;
     height: 100%;

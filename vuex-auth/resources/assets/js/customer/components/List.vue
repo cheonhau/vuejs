@@ -35,7 +35,7 @@
     export default {
         name: 'list',
         created() {
-            // kiểm tra xem có rỗng hay không 
+            // kiểm tra xem có rỗng hay không
             let customers = this.$store.getters.customers;
             if ( !customers.length ) {
                 this.$store.dispatch('actionCustomerFetch');

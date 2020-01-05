@@ -1,5 +1,6 @@
 <template>
     <div id="main">
+        <Loading/>
         <Header/>
         <div class="content mt-5">
             <router-view></router-view>
@@ -8,10 +9,10 @@
 </template>
 
 <script>
-    import Header from './Header.vue';
-
+    import Header from './Header';
+    import Loading from './Loading';
     export default {
         name: 'main-app',
-        components: {Header}
+        components: {Header, Loading}
     }
 </script>
