@@ -41,6 +41,9 @@
                 <li v-for="(fieldsError, fieldName) in errors" :key="fieldName">
                     <strong>{{ fieldName }}</strong> {{ fieldsError.join('\n') }}
                 </li>
+                <li v-if="error_backend">
+                    <strong>{{ error_backend }}</strong>
+                </li>
             </ul>
         </div>
     </div>
@@ -59,7 +62,8 @@
                     phone: '',
                     website: ''
                 },
-                errors: null
+                errors: null,
+                error_backend : null
             };
         },
         computed: {
@@ -71,6 +75,7 @@
         methods: {
             async add() {
                 this.errors = null;
+                this.error_backend = null;
 
                 const constraints = this.getConstraints();
 
@@ -80,13 +85,13 @@
                     this.errors = errors;
                     return;
                 }
-                this.$store.dispatch('togger_loadding');
-                var result_add;
-                result_add = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
 
                 this.$store.dispatch('togger_loadding');
+                let result_add = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
+                this.$store.dispatch('togger_loadding');
+
                 if ( result_add.errors.length > 0 ) {
-                    alert(result_add.errors);
+                    this.error_backend = result_add.errors;
                 } else {
                     this.$router.push('/customers');
                 }

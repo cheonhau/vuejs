@@ -13,7 +13,10 @@ class CustomerController extends Controller
         $customers = Customer::all();
 
         return response()->json([
-            "customers" => $customers
+            "data" => [
+                "customers" => $customers
+            ],
+            "errors" => []
         ], 200);
     }
 
@@ -21,7 +24,10 @@ class CustomerController extends Controller
         $customer = Customer::whereId($id)->first();
 
         return response()->json([
-            "customer" => $customer
+            "data" => [
+                "customer" => $customer
+            ],
+            "errors" => []
         ], 200);
     }
 

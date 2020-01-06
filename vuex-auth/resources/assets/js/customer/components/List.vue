@@ -13,7 +13,7 @@
             <tbody>
                 <template v-if="customers && customers.length">
                     <tr v-for="customer in customers" :key="customer.id">
-                        <td>{{ customer.name }}</td>
+                        <td data-toggle="modal" data-target="#exampleModalCenter">{{ customer.name }}</td>
                         <td>{{ customer.email }}</td>
                         <td>{{ customer.phone }}</td>
                         <td>
