@@ -47,9 +47,9 @@ const actions = {
         })
     },
     // customer
-    async actionCustomerFetch({ commit }) {
+    async actionCustomerFetch({ commit }, page) {
         try {
-            let response = await getCustomerList()
+            let response = await getCustomerList(page)
             // if (response.status == 200 ) {
                 return commit(CUSTOMER_FETCH, response.data.customers)
             // }

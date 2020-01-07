@@ -16,6 +16,8 @@ import StoreData from './user/module';
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
+Vue.component('pagination', require('./components/Pagination.vue'));
+
 // const store = new Vuex.Store(StoreData);
 const store = new Vuex.Store({
     modules : {

@@ -1,6 +1,6 @@
-export function getCustomerList () {
+export function getCustomerList (page) {
     // return new Promise ( (res, rej) => {
-    return axios.get('/api/customers')
+    return axios.get(`/api/customers?page=${page}`)
     .then(response => response)
     .catch(error => error)
     // });

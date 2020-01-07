@@ -9,8 +9,9 @@ use App\Http\Requests\CreateCustomerRequest;
 
 class CustomerController extends Controller
 {
-    public function all () {
-        $customers = Customer::all();
+    public function all ( Request $request ) {
+        // $page = $request->get('page', 1); https://stackoverflow.com/questions/45206337/why-pagination-laravel-ignores-requests-skip-take
+        $customers = Customer::paginate(10);
 
         return response()->json([
             "data" => [
