@@ -53662,7 +53662,7 @@ var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("75dd4295", content, false, {});
+var update = __webpack_require__(4)("7f66f6bc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -53686,7 +53686,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.btn-wrapper[data-v-3b921718] {\n    text-align: right;\n    margin-bottom: 20px;\n}\n", ""]);
+exports.push([module.i, "\n.btn-wrapper[data-v-3b921718] {\r\n    text-align: right;\r\n    margin-bottom: 20px;\n}\r\n", ""]);
 
 // exports
 
@@ -54067,7 +54067,7 @@ var content = __webpack_require__(64);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("9b7d0698", content, false, {});
+var update = __webpack_require__(4)("410b4507", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -54091,7 +54091,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.errors {\n    background: lightcoral;\n    border-radius:5px;\n    padding: 21px 0 2px 0;\n}\n", ""]);
+exports.push([module.i, "\n.errors {\r\n    background: lightcoral;\r\n    border-radius:5px;\r\n    padding: 21px 0 2px 0;\n}\r\n", ""]);
 
 // exports
 
@@ -55047,9 +55047,9 @@ if (hadRuntime) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {/*!
- * validate.js 0.12.0
+ * validate.js 0.13.1
  *
- * (c) 2013-2017 Nicklas Ansman, 2013 Wrapp
+ * (c) 2013-2019 Nicklas Ansman, 2013 Wrapp
  * Validate.js may be freely distributed under the MIT license.
  * For all details and documentation:
  * http://validatejs.org/
@@ -55100,8 +55100,8 @@ if (hadRuntime) {
     // The toString function will allow it to be coerced into a string
     version: {
       major: 0,
-      minor: 12,
-      patch: 0,
+      minor: 13,
+      patch: 1,
       metadata: null,
       toString: function() {
         var version = v.format("%{major}.%{minor}.%{patch}", v.version);
@@ -55435,6 +55435,10 @@ if (hadRuntime) {
       }
 
       if (v.isObject(str)) {
+        if (!v.isDefined(str.toString)) {
+          return JSON.stringify(str);
+        }
+
         return str.toString();
       }
 
@@ -55578,7 +55582,7 @@ if (hadRuntime) {
           continue;
         }
 
-        name = input.name.replace(/\./g, "\\\\.");
+        var name = input.name.replace(/\./g, "\\\\.");
         value = v.sanitizeFormValue(input.value, options);
         if (input.type === "number") {
           value = value ? +value : null;
@@ -55614,7 +55618,7 @@ if (hadRuntime) {
             }
           }
         } else {
-          var _val = typeof input.options[input.selectedIndex] !== 'undefined' ? input.options[input.selectedIndex].value : '';
+          var _val = typeof input.options[input.selectedIndex] !== 'undefined' ? input.options[input.selectedIndex].value : /* istanbul ignore next */ '';
           value = v.sanitizeFormValue(_val, options);
         }
         values[input.name] = value;
@@ -55836,7 +55840,6 @@ if (hadRuntime) {
       value = tokenizer(value);
       var length = value.length;
       if(!v.isNumber(length)) {
-        v.error(v.format("Attribute %{attr} has a non numeric value for `length`", {attr: attribute}));
         return options.message || this.notValid || "has an incorrect length";
       }
 
@@ -56087,6 +56090,9 @@ if (hadRuntime) {
         return;
       }
       var message = options.message || this.message || "^%{value} is restricted";
+      if (v.isString(options.within[value])) {
+        value = options.within[value];
+      }
       return v.format(message, {value: value});
     },
     email: v.extend(function(value, options) {
@@ -56103,7 +56109,7 @@ if (hadRuntime) {
         return message;
       }
     }, {
-      PATTERN: /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i
+      PATTERN: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i
     }),
     equality: function(value, options, attribute, attributes, globalOptions) {
       if (!v.isDefined(value)) {
@@ -56134,7 +56140,6 @@ if (hadRuntime) {
         return v.format(message, {attribute: prettify(options.attribute)});
       }
     },
-
     // A URL validator that is used to validate URLs with the ability to
     // restrict schemes and some domains.
     url: function(value, options) {
@@ -56146,8 +56151,8 @@ if (hadRuntime) {
 
       var message = options.message || this.message || "is not a valid url"
         , schemes = options.schemes || this.schemes || ['http', 'https']
-        , allowLocal = options.allowLocal || this.allowLocal || false;
-
+        , allowLocal = options.allowLocal || this.allowLocal || false
+        , allowDataUrl = options.allowDataUrl || this.allowDataUrl || false;
       if (!v.isString(value)) {
         return message;
       }
@@ -56196,11 +56201,73 @@ if (hadRuntime) {
         "(?:[/?#]\\S*)?" +
       "$";
 
+      if (allowDataUrl) {
+        // RFC 2397
+        var mediaType = "\\w+\\/[-+.\\w]+(?:;[\\w=]+)*";
+        var urlchar = "[A-Za-z0-9-_.!~\\*'();\\/?:@&=+$,%]*";
+        var dataurl = "data:(?:"+mediaType+")?(?:;base64)?,"+urlchar;
+        regex = "(?:"+regex+")|(?:^"+dataurl+"$)";
+      }
+
       var PATTERN = new RegExp(regex, 'i');
       if (!PATTERN.exec(value)) {
         return message;
       }
-    }
+    },
+    type: v.extend(function(value, originalOptions, attribute, attributes, globalOptions) {
+      if (v.isString(originalOptions)) {
+        originalOptions = {type: originalOptions};
+      }
+
+      if (!v.isDefined(value)) {
+        return;
+      }
+
+      var options = v.extend({}, this.options, originalOptions);
+
+      var type = options.type;
+      if (!v.isDefined(type)) {
+        throw new Error("No type was specified");
+      }
+
+      var check;
+      if (v.isFunction(type)) {
+        check = type;
+      } else {
+        check = this.types[type];
+      }
+
+      if (!v.isFunction(check)) {
+        throw new Error("validate.validators.type.types." + type + " must be a function.");
+      }
+
+      if (!check(value, options, attribute, attributes, globalOptions)) {
+        var message = originalOptions.message ||
+          this.messages[type] ||
+          this.message ||
+          options.message ||
+          (v.isFunction(type) ? "must be of the correct type" : "must be of type %{type}");
+
+        if (v.isFunction(message)) {
+          message = message(value, originalOptions, attribute, attributes, globalOptions);
+        }
+
+        return v.format(message, {attribute: v.prettify(attribute), type: type});
+      }
+    }, {
+      types: {
+        object: function(value) {
+          return v.isObject(value) && !v.isArray(value);
+        },
+        array: v.isArray,
+        integer: v.isInteger,
+        number: v.isNumber,
+        string: v.isString,
+        date: v.isDate,
+        boolean: v.isBoolean
+      },
+      messages: {}
+    })
   };
 
   validate.formatters = {
@@ -56495,7 +56562,7 @@ var content = __webpack_require__(72);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("34cd8eaa", content, false, {});
+var update = __webpack_require__(4)("7f3cd0b7", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -56519,7 +56586,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.customer-view[data-v-32a4459f] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.user-img[data-v-32a4459f] {\n    -webkit-box-flex: 1;\n        -ms-flex: 1;\n            flex: 1;\n}\n.user-img img[data-v-32a4459f] {\n    max-width: 160px;\n}\n.user-info[data-v-32a4459f] {\n    -webkit-box-flex: 3;\n        -ms-flex: 3;\n            flex: 3;\n    overflow-x: scroll;\n}\n", ""]);
+exports.push([module.i, "\n.customer-view[data-v-32a4459f] {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\n}\n.user-img[data-v-32a4459f] {\r\n    -webkit-box-flex: 1;\r\n        -ms-flex: 1;\r\n            flex: 1;\n}\n.user-img img[data-v-32a4459f] {\r\n    max-width: 160px;\n}\n.user-info[data-v-32a4459f] {\r\n    -webkit-box-flex: 3;\r\n        -ms-flex: 3;\r\n            flex: 3;\r\n    overflow-x: scroll;\n}\r\n", ""]);
 
 // exports
 
@@ -56567,7 +56634,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'view_customer',
     mounted: function mounted() {
-        // kiểm tra đã có danh sách chưa, vì trước sau cũng phải lấy
         var customers = this.$store.getters.customers;
         if (!customers.length) {
             this.$store.dispatch('actionCustomerFetch');
@@ -56579,9 +56645,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             var customers = this.$store.getters.customers;
-            return customers.find(function (customer) {
-                return customer.id == _this.$route.params.id;
-            });
+            if (typeof customers.data !== 'undefined') {
+                return customers.data.find(function (customer) {
+                    return customer.id == _this.$route.params.id;
+                });
+            }
         }
     }
 });
@@ -56730,7 +56798,7 @@ var content = __webpack_require__(77);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("73b4c5c6", content, false, {});
+var update = __webpack_require__(4)("78814e30", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -56754,7 +56822,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.error[data-v-1260679c] {\n    text-align: center;\n    color: red;\n}\n", ""]);
+exports.push([module.i, "\n.error[data-v-1260679c] {\r\n    text-align: center;\r\n    color: red;\n}\r\n", ""]);
 
 // exports
 
@@ -57367,7 +57435,7 @@ var content = __webpack_require__(87);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("acf8699a", content, false, {});
+var update = __webpack_require__(4)("6719d2d3", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -57391,7 +57459,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n#container-loading {\n    background-color: #000000;\n    width: 100%;\n    height: 100%;\n    position: fixed;\n    z-index: 99999;\n    opacity: 0.3;\n    display: none;\n}\nsection {\n    text-align: center;\n    position: fixed;\n    left: 0;\n    right: 0;\n    z-index: 999999;\n    top: 50%;\n    margin-top: -60px;\n}\n@media only screen and (max-width: 600px) {\nsection {\n        min-width: 350px;\n}\n}\n.loader {\n    position: relative;\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    margin: 75px;\n    display: inline-block;\n    vertical-align: middle;\n}\n/*LOADER-1*/\n.loader-1 .loader-outter {\n    position: absolute;\n    border: 4px solid #ffffff;\n    border-left-color: transparent;\n    border-bottom: 0;\n    width: 100%;\n    height: 100%;\n    border-radius: 50%;\n    -webkit-animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n    animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n.loader-1 .loader-inner {\n    position: absolute;\n    border: 4px solid #ffffff;\n    border-radius: 50%;\n    width: 40px;\n    height: 40px;\n    left: calc(50% - 20px);\n    top: calc(50% - 20px);\n    border-right: 0;\n    border-top-color: transparent;\n    -webkit-animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n    animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n\n/* ----------------     KEYFRAMES    ----------------- */\n@-webkit-keyframes loader-1-outter {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(360deg);\n        transform: rotate(360deg);\n}\n}\n@keyframes loader-1-outter {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(360deg);\n        transform: rotate(360deg);\n}\n}\n@-webkit-keyframes loader-1-inner {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(-360deg);\n        transform: rotate(-360deg);\n}\n}\n@keyframes loader-1-inner {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(-360deg);\n        transform: rotate(-360deg);\n}\n}\n", ""]);
+exports.push([module.i, "\n#container-loading {\r\n    background-color: #000000;\r\n    width: 100%;\r\n    height: 100%;\r\n    position: fixed;\r\n    z-index: 99999;\r\n    opacity: 0.3;\r\n    display: none;\n}\nsection {\r\n    text-align: center;\r\n    position: fixed;\r\n    left: 0;\r\n    right: 0;\r\n    z-index: 999999;\r\n    top: 50%;\r\n    margin-top: -60px;\n}\n@media only screen and (max-width: 600px) {\nsection {\r\n        min-width: 350px;\n}\n}\n.loader {\r\n    position: relative;\r\n    width: 60px;\r\n    height: 60px;\r\n    border-radius: 50%;\r\n    margin: 75px;\r\n    display: inline-block;\r\n    vertical-align: middle;\n}\r\n/*LOADER-1*/\n.loader-1 .loader-outter {\r\n    position: absolute;\r\n    border: 4px solid #ffffff;\r\n    border-left-color: transparent;\r\n    border-bottom: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    border-radius: 50%;\r\n    -webkit-animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\r\n    animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n.loader-1 .loader-inner {\r\n    position: absolute;\r\n    border: 4px solid #ffffff;\r\n    border-radius: 50%;\r\n    width: 40px;\r\n    height: 40px;\r\n    left: calc(50% - 20px);\r\n    top: calc(50% - 20px);\r\n    border-right: 0;\r\n    border-top-color: transparent;\r\n    -webkit-animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\r\n    animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\r\n\r\n/* ----------------     KEYFRAMES    ----------------- */\n@-webkit-keyframes loader-1-outter {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(360deg);\r\n        transform: rotate(360deg);\n}\n}\n@keyframes loader-1-outter {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(360deg);\r\n        transform: rotate(360deg);\n}\n}\n@-webkit-keyframes loader-1-inner {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(-360deg);\r\n        transform: rotate(-360deg);\n}\n}\n@keyframes loader-1-inner {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(-360deg);\r\n        transform: rotate(-360deg);\n}\n}\r\n", ""]);
 
 // exports
 
@@ -57893,10 +57961,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
-        pagination: {
-            type: Object,
-            required: true
-        },
+        pagination: {},
         offset: {
             type: Number,
             default: 4
@@ -57955,11 +58020,21 @@ var render = function() {
     { staticClass: "pagination" },
     [
       _vm.onFirstPage()
-        ? _c("li", { staticClass: "disabled" }, [_c("span", [_vm._v("«")])])
-        : _c("li", [
+        ? _c("li", { staticClass: "disabled page-item" }, [
             _c(
               "a",
               {
+                staticClass: "page-link",
+                attrs: { href: "javascript:void(0)" }
+              },
+              [_vm._v("«")]
+            )
+          ])
+        : _c("li", { staticClass: "page-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
                 attrs: { href: "javascript:void(0)" },
                 on: {
                   click: function($event) {
@@ -57972,11 +58047,21 @@ var render = function() {
           ]),
       _vm._v(" "),
       _vm.onFirstPage()
-        ? _c("li", { staticClass: "disabled" }, [_c("span", [_vm._v("‹")])])
-        : _c("li", [
+        ? _c("li", { staticClass: "disabled page-item" }, [
             _c(
               "a",
               {
+                staticClass: "page-link",
+                attrs: { href: "javascript:void(0)" }
+              },
+              [_vm._v("‹")]
+            )
+          ])
+        : _c("li", { staticClass: "page-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
                 attrs: { href: "javascript:void(0)" },
                 on: {
                   click: function($event) {
@@ -57993,12 +58078,14 @@ var render = function() {
           "li",
           {
             key: "pagination" + index,
+            staticClass: "page-item",
             class: { active: page == _vm.pagination.current_page }
           },
           [
             _c(
               "a",
               {
+                staticClass: "page-link",
                 attrs: { href: "javascript:void(0)" },
                 on: {
                   click: function($event) {
@@ -58014,11 +58101,21 @@ var render = function() {
       }),
       _vm._v(" "),
       _vm.onLastPage()
-        ? _c("li", { staticClass: "disabled" }, [_c("span", [_vm._v("›")])])
-        : _c("li", [
+        ? _c("li", { staticClass: "disabled page-item" }, [
             _c(
               "a",
               {
+                staticClass: "page-link",
+                attrs: { href: "javascript:void(0)" }
+              },
+              [_vm._v("›")]
+            )
+          ])
+        : _c("li", { staticClass: "page-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
                 attrs: { href: "javascript:void(0)" },
                 on: {
                   click: function($event) {
@@ -58031,11 +58128,21 @@ var render = function() {
           ]),
       _vm._v(" "),
       _vm.onLastPage()
-        ? _c("li", { staticClass: "disabled" }, [_c("span", [_vm._v("»")])])
-        : _c("li", [
+        ? _c("li", { staticClass: "disabled page-item" }, [
             _c(
               "a",
               {
+                staticClass: "page-link",
+                attrs: { href: "javascript:void(0)" }
+              },
+              [_vm._v("»")]
+            )
+          ])
+        : _c("li", { staticClass: "page-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
                 attrs: { href: "javascript:void(0)" },
                 on: {
                   click: function($event) {

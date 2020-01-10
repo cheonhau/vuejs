@@ -1,35 +1,35 @@
 <template>
     <ul class="pagination">
-        <li class="disabled" v-if="onFirstPage()">
-            <span>&laquo;</span>
+        <li class="disabled page-item" v-if="onFirstPage()">
+            <a href="javascript:void(0)" class="page-link">&laquo;</a>
         </li>
-        <li v-else>
-            <a href="javascript:void(0)" @click="changePage(1)">&laquo;</a>
-        </li>
-
-        <li class="disabled" v-if="onFirstPage()">
-            <span>&lsaquo;</span>
-        </li>
-        <li v-else>
-            <a href="javascript:void(0)" @click="changePage(pagination.current_page - 1)">&lsaquo;</a>
+        <li class="page-item" v-else>
+            <a href="javascript:void(0)" @click="changePage(1)" class="page-link">&laquo;</a>
         </li>
 
-        <li v-for="(page, index) in pagesNumber" :class="{'active': page == pagination.current_page}" :key="'pagination'+index">
-            <a href="javascript:void(0)" v-on:click.prevent="changePage(page)">{{ page }}</a>
+        <li class="disabled page-item" v-if="onFirstPage()">
+            <a href="javascript:void(0)" class="page-link">&lsaquo;</a>
+        </li>
+        <li class="page-item" v-else>
+            <a href="javascript:void(0)" @click="changePage(pagination.current_page - 1)" class="page-link">&lsaquo;</a>
         </li>
 
-        <li class="disabled" v-if="onLastPage()">
-            <span>&rsaquo;</span>
-        </li>
-        <li v-else>
-            <a href="javascript:void(0)" @click="changePage(pagination.current_page + 1)">&rsaquo;</a>
+        <li class="page-item" v-for="(page, index) in pagesNumber" :class="{'active': page == pagination.current_page}" :key="'pagination'+index">
+            <a href="javascript:void(0)" v-on:click.prevent="changePage(page)" class="page-link">{{ page }}</a>
         </li>
 
-        <li class="disabled" v-if="onLastPage()">
-            <span>&raquo;</span>
+        <li class="disabled page-item" v-if="onLastPage()">
+            <a href="javascript:void(0)" class="page-link">&rsaquo;</a>
         </li>
-        <li v-else>
-            <a href="javascript:void(0)" @click="changePage(pagination.last_page)">&raquo;</a>
+        <li class="page-item" v-else>
+            <a href="javascript:void(0)" @click="changePage(pagination.current_page + 1)" class="page-link">&rsaquo;</a>
+        </li>
+
+        <li class="disabled page-item" v-if="onLastPage()">
+            <a href="javascript:void(0)" class="page-link">&raquo;</a>
+        </li>
+        <li class="page-item" v-else>
+            <a href="javascript:void(0)" @click="changePage(pagination.last_page)" class="page-link">&raquo;</a>
         </li>
 
     </ul>
@@ -37,10 +37,7 @@
 <script>
 export default {
     props : {
-        pagination : {
-            type : Object,
-            required : true
-        },
+        pagination : {},
         offset : {
             type : Number,
             default : 4

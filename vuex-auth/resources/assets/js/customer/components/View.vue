@@ -35,7 +35,6 @@
     export default {
         name: 'view_customer',
         mounted() {
-            // kiểm tra đã có danh sách chưa, vì trước sau cũng phải lấy
             let customers = this.$store.getters.customers;
             if ( !customers.length ) {
                 this.$store.dispatch('actionCustomerFetch');
@@ -44,7 +43,9 @@
         computed: {
             customer() {
                 let customers = this.$store.getters.customers;
-                return customers.find((customer) => customer.id == this.$route.params.id);
+                if ( typeof customers.data !== 'undefined' ) {
+                    return customers.data.find((customer) => customer.id == this.$route.params.id);
+                }
             }
         }
     }
