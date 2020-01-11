@@ -17,7 +17,9 @@
                         <td>{{ customer.email }}</td>
                         <td>{{ customer.phone }}</td>
                         <td>
-                            <router-link :to="`/customers/${customer.id}`">View</router-link>
+                            <router-link :to="`/customers/${customer.id}`" class="btn btn-primary">View</router-link>
+                            <router-link :to="`/customers/edit/${customer.id}`" class="btn btn-success">Edit</router-link>
+                            <button class="btn btn-danger">Delete</button>
                         </td>
                     </tr>
                 </template>

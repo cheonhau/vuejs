@@ -1,4 +1,5 @@
 import Home from './components/Home.vue';
+import EditCustomer from './customer/components/Edit.vue';
 import CustomersList from './customer/components/List.vue';
 import CustomersMain from './customer/components/Main.vue';
 import NewCustomer from './customer/components/New.vue';
@@ -35,7 +36,11 @@ export const routes = [
             {
                 path: ':id',
                 component: Customer
-            }
+            },
+            {
+                path: 'edit/:id',
+                component: EditCustomer
+            },
         ]
     }
 ];
