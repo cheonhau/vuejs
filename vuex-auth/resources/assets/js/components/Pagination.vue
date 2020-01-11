@@ -40,28 +40,21 @@ export default {
         pagination : {},
         offset : {
             type : Number,
-            default : 4
+            default : 5
         }
     },
     computed: {
         pagesNumber() {
-            if (!this.pagination.to) {
-                return [];
-            }
-            let from = this.pagination.current_page - this.offset;
-            if (from < 1) {
-                from = 1;
-            }
-            let to = from + (this.offset * 2);
-            if (to >= this.pagination.last_page) {
-                to = this.pagination.last_page;
-            }
-            let pagesArray = [];
-            for (let page = from; page <= to; page++) {
-                pagesArray.push(page);
-            }
-            return pagesArray;
-        }
+            let min = 1, length = this.offset, current_page = this.pagination.current_page, total_page = this.pagination.last_page;
+            if (length > total_page) length = total_page;
+
+            let start = current_page - Math.floor(length / 2);
+            start = Math.max(start, min);
+            start = Math.min(start, min + total_page - length);
+
+            return Array.from({length: length}, (el, i) => start + i);
+        },
+        // có một function ranger nếu page dài quá ta dùng dots ... https://gist.github.com/kottenator/9d936eb3e4e3c3e02598, https://mossiso.com/js-pagination/
     },
     methods: {
         onFirstPage () {

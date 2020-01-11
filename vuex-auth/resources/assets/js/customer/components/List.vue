@@ -28,7 +28,7 @@
                 </template>
             </tbody>
         </table>
-        <pagination @paginate="getCustomer" :pagination="customers" :offset="4"></pagination>
+        <pagination @paginate="getCustomer" :pagination="customers" :offset="5"></pagination>
     </div>
 </template>
 
