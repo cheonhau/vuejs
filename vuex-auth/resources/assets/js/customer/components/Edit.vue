@@ -1,7 +1,7 @@
 <template>
     <div class="customer-edit">
         <form @submit.prevent="edit">
-            <table class="table">
+            <table class="table" v-if="customer && Object.keys(customer).length > 0">
                 <tr>
                     <th>Name</th>
                     <td>
@@ -17,7 +17,7 @@
                 <tr>
                     <th>Phone</th>
                     <td>
-                        <input type="text" class="fomr-control" v-model="customer.phone" placeholder="Enter Your Phone">
+                        <input type="text" class="form-control" v-model="customer.phone" placeholder="Enter Your Phone">
                     </td>
                 </tr>
                 <tr>
@@ -31,7 +31,7 @@
                         <router-link to="/customers">Cancel</router-link>
                     </th>
                     <td class="text-right">
-                        <input type="submit" value="" class="btn btn-success">
+                        <input type="submit" value="Edit" class="btn btn-success">
                     </td>
                 </tr>
                 <div class="errors" v-if="errors">
@@ -53,6 +53,12 @@ import validate from 'validate.js';
 
 export default {
     name : 'customer-edit',
+    data() {
+        return {
+            errors: null,
+            error_backend : null,
+        }
+    },
     mounted() {
         let customers = this.$store.getters.customers;
         if ( customers.length == 0 ) {
@@ -60,8 +66,28 @@ export default {
         }
     },
     methods: {
-        edit () {
+        async edit () {
+            this.errors = null;
+            this.error_backend = null;
 
+            const constraints = this.getConstraints();
+
+            const errors = validate(this.$data.customer, constraints);
+
+            if(errors) {
+                this.errors = errors;
+                return;
+            }
+
+            this.$store.dispatch('togger_loadding');
+            let result_add = await this.$store.dispatch('actionCustomerEdit', {'id' : this.$route.params.id, 'customer' : this.$data.customer} );
+            this.$store.dispatch('togger_loadding');
+
+            if ( result_add.errors.length > 0 ) {
+                this.error_backend = result_add.errors;
+            } else {
+                this.$router.push('/customers');
+            }
         },
         getConstraints() {
             return {
@@ -95,7 +121,7 @@ export default {
         customer () {
             let customers = this.$store.getters.customers;
             if ( typeof customers.data !== 'undefined' ) {
-                return customers.data.find( (customer) => customer.id === this.$route.params.id )
+                return customers.data.find( (customer) => customer.id == this.$route.params.id )
             }
         }
     },

@@ -1,4 +1,4 @@
-import { getCustomerList, addCustomer, getCustomer } from './api'
+import { getCustomerList, addCustomer, editCustomer, getCustomer } from './api'
 
 const CUSTOMER_FETCH = 'customer_fetch';
 const CUSTOMER_ADD = 'customer_add';
@@ -60,12 +60,18 @@ const actions = {
 
     async actionCustomerAdd({ commit }, customer) {
         let response = await addCustomer(customer);
-        console.log(response);
         if ( response.data ) {
             commit(CUSTOMER_ADD, response.data.customer);
         }
 
         return response;
+    },
+    async actionCustomerEdit ({ commit }, {id, customer} ) {
+        console.log(id, customer);
+        // let response = await editCustomer(id, customer);
+        // if ( response.data ) {
+
+        // }
     },
     async actionCustomerChangeStatus({ commit }, id) {
         return commit(CUSTOMER_TOGGLE_STATUS, id)

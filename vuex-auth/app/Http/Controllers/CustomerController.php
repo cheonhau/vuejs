@@ -48,4 +48,25 @@ class CustomerController extends Controller
         //     ]
         // ], 400);
     }
+
+    public function edit ($id) {
+        try {
+            $customer = Customer::where('id', $id)
+                        ->update( $request->only(["name", "email", "phone", "website"]) );
+
+            return response()->json([
+                "data" => [
+                    "customer" => $customer
+                ],
+                "errors" => []
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "errors" => [
+                    "message" => $e->getMessage()
+                ],
+                "data" => []
+            ], 200);
+        }
+    }
 }
