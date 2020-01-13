@@ -36,7 +36,7 @@ class CustomerController extends Controller
             // return $request->get('customer')['name'];
             $customer = Customer::create( $request->only(["name", "email", "phone", "website"]) );
 
-            $customers = Customer::paginate(10);
+            $customers = Customer::paginate(10); // >paged($whatEver);
             return response()->json([
                 "data" => [
                     "customer" => $customers
