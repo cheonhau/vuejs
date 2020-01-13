@@ -5,9 +5,9 @@ export function getCustomerList (page) {
     .catch(error => error);
     // });
 }
-export function addCustomer (customer) {
+export function addCustomer (customer, page) {
     // return new Promise ( (res, rej) => {
-    return axios.post('/api/customers/new', customer)
+    return axios.post(`/api/customers/new?page=${page}`, customer)
         .then(response => response)
         .catch(error => error);
     // })
@@ -19,6 +19,11 @@ export function getCustomer (id) {
 }
 export function editCustomer (id, customer) {
     return axios.put(`/api/customers/${id}`, customer)
+        .then(response => response)
+        .catch(error => error);
+}
+export function deleteCustomer (id) {
+    return axios.delete(`/api/customers/${id}?page=${page}`)
         .then(response => response)
         .catch(error => error);
 }

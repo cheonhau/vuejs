@@ -72,17 +72,16 @@ export default {
 
             const constraints = this.getConstraints();
 
-            const errors = validate(this.$data.customer, constraints);
-
+            const errors = validate(this.customer, constraints);
+            
             if(errors) {
                 this.errors = errors;
                 return;
             }
 
             this.$store.dispatch('togger_loadding');
-            let result_add = await this.$store.dispatch('actionCustomerEdit', {'id' : this.$route.params.id, 'customer' : this.$data.customer} );
+            let result_add = await this.$store.dispatch('actionCustomerEdit', {'id' : this.$route.params.id, 'customer' : this.customer} );
             this.$store.dispatch('togger_loadding');
-
             if ( result_add.errors.length > 0 ) {
                 this.error_backend = result_add.errors;
             } else {

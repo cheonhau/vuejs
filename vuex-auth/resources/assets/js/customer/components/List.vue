@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="btn-wrapper">
-            <router-link to="/customers/new" class="btn btn-primary btn-sm">New</router-link>
+            <router-link to="/customers/new" class="btn btn-info btn-sm text-white">New</router-link>
         </div>
         <table class="table">
             <thead>
@@ -19,7 +19,7 @@
                         <td>
                             <router-link :to="`/customers/${customer.id}`" class="btn btn-primary">View</router-link>
                             <router-link :to="`/customers/edit/${customer.id}`" class="btn btn-success">Edit</router-link>
-                            <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-danger" @click="deleteCustomer(customer.id)">Delete</button>
                         </td>
                     </tr>
                 </template>
@@ -53,6 +53,12 @@
         methods: {
             getCustomer (page) {
                 this.$store.dispatch('actionCustomerFetch', page);
+            },
+            async deleteCustomer (id) {
+                this.$store.dispatch('togger_loadding');
+                await this.$store.dispatch('actionCustomerDelete', id);
+                this.$store.dispatch('togger_loadding');
+                // this.customers = this.$store.getters.customers;
             }
         },
     }
@@ -62,5 +68,8 @@
 .btn-wrapper {
     text-align: right;
     margin-bottom: 20px;
+}
+table tbody tr td:nth-child(4) {
+    min-width: 220px;
 }
 </style>

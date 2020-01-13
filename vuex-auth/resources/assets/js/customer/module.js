@@ -1,8 +1,10 @@
-import { getCustomerList, addCustomer, editCustomer, getCustomer } from './api'
+import { getCustomerList, addCustomer, editCustomer, deleteCustomer, getCustomer } from './api'
 
-const CUSTOMER_FETCH = 'customer_fetch';
-const CUSTOMER_ADD = 'customer_add';
-const CUSTOMER_TOGGLE_STATUS = 'customer_toggle_status';
+const CUSTOMER_FETCH            = 'customer_fetch';
+const CUSTOMER_ADD              = 'customer_add';
+const CUSTOMER_TOGGLE_STATUS    = 'customer_toggle_status';
+const CUSTOMER_EDIT             = 'customer_edit';
+const CUSTOMER_DELETE           = 'customer_delete';
 // const TODO_DELETE = 'todo_delete'
 
 const state = {
@@ -22,21 +24,23 @@ const mutations = {
     },
 
     [CUSTOMER_ADD](state, customer) {
-        return state.customers = [customer, ...state.customers]
+        return state.customers = customer;
     },
 
     [CUSTOMER_TOGGLE_STATUS](state, id) {
         return state.customers = state.customers.find((customer) => customer.id == id);
     },
 
-    // [CUSTOMER_TOGGLE_STATUS](state, id) {
-    //     return state.customers = state.customers.map((customer) => customer.id === id ? { ...customer, status: !customer.status } : customer)
-    // },
+    [CUSTOMER_EDIT](state, customer_edit) {
+        return state.customers.data = state.customers.data.map((customer) => customer.id == customer_edit.id ? customer_edit : customer)
+        // return state.customers = state.customers.map((customer) => customer.id === customer_edit.id ? { ...customer, status: !customer.status } : customer)
+    },
 
-    // [TODO_DELETE](state, id) {
-    //     return state.customers = state.customers.filter((todo) => todo.id !== id)
-    //     // state.customers.splice(state.customers.indexOf(id), 1);
-    // }
+    [CUSTOMER_DELETE](state, customer) {
+        return state.customers = customer;
+        // return state.customers.data = state.customers.filter((todo) => todo.id !== id)
+        // state.customers.splice(state.customers.indexOf(id), 1);
+    }
 }
 
 const actions = {
@@ -58,8 +62,10 @@ const actions = {
         }
     },
 
-    async actionCustomerAdd({ commit }, customer) {
-        let response = await addCustomer(customer);
+    async actionCustomerAdd({ commit, state }, customer) {
+        let page = state.customers.current_page;
+        console.log(state.customers.current_page)
+        let response = await addCustomer(customer, page);
         if ( response.data ) {
             commit(CUSTOMER_ADD, response.data.customer);
         }
@@ -67,11 +73,13 @@ const actions = {
         return response;
     },
     async actionCustomerEdit ({ commit }, {id, customer} ) {
-        console.log(id, customer);
-        // let response = await editCustomer(id, customer);
-        // if ( response.data ) {
-
-        // }
+        // console.log(id, customer);
+        let response = await editCustomer(id, customer);
+        
+        if ( response.data ) {
+            commit(CUSTOMER_EDIT, response.data.customer);
+        }
+        return response;
     },
     async actionCustomerChangeStatus({ commit }, id) {
         return commit(CUSTOMER_TOGGLE_STATUS, id)
@@ -84,7 +92,7 @@ const actions = {
         } catch (error) {
             return error;
         }
-    }
+    },
 
     // async actionCustomerChangeStatus({ commit }, { id, status }) {
     //     let response = await getCustomer(id, { status })
@@ -94,13 +102,14 @@ const actions = {
     //     }
     // },
 
-    // async actionTodoDelete({ commit }, id) {
-    //     let response = await apiDeleteTodo(id)
-
-    //     if (response.status == 200) {
-    //         return commit(TODO_DELETE, id)
-    //     }
-    // }
+    async actionCustomerDelete({ commit, state }, id) {
+        let page = state.customers.current_page;
+        let response = await deleteCustomer(id, page)
+        if ( response.data ) {
+            commit(CUSTOMER_DELETE, response.data.customer);
+        }
+        return response;
+    }
 }
 
 export default {
