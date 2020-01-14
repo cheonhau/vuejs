@@ -22,7 +22,7 @@ export function editCustomer (id, customer) {
         .then(response => response)
         .catch(error => error);
 }
-export function deleteCustomer (id) {
+export function deleteCustomer (id, page) {
     return axios.delete(`/api/customers/${id}?page=${page}`)
         .then(response => response)
         .catch(error => error);

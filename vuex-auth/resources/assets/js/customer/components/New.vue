@@ -66,12 +66,6 @@
                 error_backend : null
             };
         },
-        computed: {
-            // có vẻ hơi dư thừa đoạn này xxx
-            currentUser() {
-                return this.$store.getters.currentUser;
-            }
-        },
         methods: {
             async add() {
                 this.errors = null;

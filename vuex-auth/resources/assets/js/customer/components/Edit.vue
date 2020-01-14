@@ -1,7 +1,8 @@
 <template>
     <div class="customer-edit">
         <form @submit.prevent="edit">
-            <table class="table" v-if="customer && Object.keys(customer).length > 0">
+            <template v-if="customer && Object.keys(customer).length > 0">
+            <table class="table">
                 <tr>
                     <th>Name</th>
                     <td>
@@ -45,6 +46,12 @@
                     </ul>
                 </div>
             </table>
+            </template>
+            <template v-else>
+                <div>
+                    Customer not found !
+                </div>
+            </template>
         </form>
     </div>
 </template>
@@ -61,7 +68,7 @@ export default {
     },
     mounted() {
         let customers = this.$store.getters.customers;
-        if ( customers.length == 0 ) {
+        if ( Object.keys(customers).length == 0 ) {
             this.$store.dispatch('actionCustomerFetch');
         }
     },

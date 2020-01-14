@@ -66,6 +66,7 @@ const actions = {
         let page = state.customers.current_page;
         console.log(state.customers.current_page)
         let response = await addCustomer(customer, page);
+        console.log(response);
         if ( response.data ) {
             commit(CUSTOMER_ADD, response.data.customer);
         }

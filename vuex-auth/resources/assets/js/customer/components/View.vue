@@ -36,7 +36,7 @@
         name: 'view_customer',
         mounted() {
             let customers = this.$store.getters.customers;
-            if ( !customers.length ) {
+            if ( Object.keys(customers).length == 0 ) {
                 this.$store.dispatch('actionCustomerFetch');
             }
         },

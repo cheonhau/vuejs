@@ -823,6 +823,13 @@ function applyToTag (styleElement, obj) {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(56);
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
@@ -922,13 +929,6 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(56);
-
 
 /***/ }),
 /* 7 */
@@ -37659,7 +37659,7 @@ module.exports = __webpack_require__(26);
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(9);
 var Axios = __webpack_require__(28);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(6);
 
 /**
  * Create an instance of Axios
@@ -37732,7 +37732,7 @@ module.exports = function isBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(6);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(36);
 var dispatchRequest = __webpack_require__(37);
@@ -38228,7 +38228,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(38);
 var isCancel = __webpack_require__(13);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(6);
 var isAbsoluteURL = __webpack_require__(39);
 var combineURLs = __webpack_require__(40);
 
@@ -54919,7 +54919,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_validate_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_validate_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_validate_js__);
@@ -54927,6 +54927,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -54990,7 +54997,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     mounted: function mounted() {
         var customers = this.$store.getters.customers;
-        if (customers.length == 0) {
+        if (Object.keys(customers).length == 0) {
             this.$store.dispatch('actionCustomerFetch');
         }
     },
@@ -55884,162 +55891,174 @@ var render = function() {
       },
       [
         _vm.customer && Object.keys(_vm.customer).length > 0
-          ? _c("table", { staticClass: "table" }, [
-              _c("tr", [
-                _c("th", [_vm._v("Name")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.customer.name,
-                        expression: "customer.name"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Enter Your Name" },
-                    domProps: { value: _vm.customer.name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+          ? [
+              _c("table", { staticClass: "table" }, [
+                _c("tr", [
+                  _c("th", [_vm._v("Name")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.customer.name,
+                          expression: "customer.name"
                         }
-                        _vm.$set(_vm.customer, "name", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Email")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.customer.email,
-                        expression: "customer.email"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Enter Your Email" },
-                    domProps: { value: _vm.customer.email },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.customer, "email", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Phone")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.customer.phone,
-                        expression: "customer.phone"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Enter Your Phone" },
-                    domProps: { value: _vm.customer.phone },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.customer, "phone", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Website")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.customer.website,
-                        expression: "customer.website"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Enter Your Website" },
-                    domProps: { value: _vm.customer.website },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.customer, "website", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c(
-                  "th",
-                  [
-                    _c("router-link", { attrs: { to: "/customers" } }, [
-                      _vm._v("Cancel")
-                    ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _vm._m(0)
-              ]),
-              _vm._v(" "),
-              _vm.errors
-                ? _c("div", { staticClass: "errors" }, [
-                    _c(
-                      "ul",
-                      [
-                        _vm._l(_vm.errors, function(fieldsError, fieldName) {
-                          return _c("li", { key: fieldName }, [
-                            _c("strong", [_vm._v(_vm._s(fieldName))]),
-                            _vm._v(
-                              " " +
-                                _vm._s(fieldsError.join("\n")) +
-                                "\n                    "
-                            )
-                          ])
-                        }),
-                        _vm._v(" "),
-                        _vm.error_backend
-                          ? _c("li", [
-                              _c("strong", [_vm._v(_vm._s(_vm.error_backend))])
-                            ])
-                          : _vm._e()
                       ],
-                      2
-                    )
+                      staticClass: "form-control",
+                      attrs: { type: "text", placeholder: "Enter Your Name" },
+                      domProps: { value: _vm.customer.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.customer, "name", $event.target.value)
+                        }
+                      }
+                    })
                   ])
-                : _vm._e()
-            ])
-          : _vm._e()
-      ]
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("th", [_vm._v("Email")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.customer.email,
+                          expression: "customer.email"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", placeholder: "Enter Your Email" },
+                      domProps: { value: _vm.customer.email },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.customer, "email", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("th", [_vm._v("Phone")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.customer.phone,
+                          expression: "customer.phone"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", placeholder: "Enter Your Phone" },
+                      domProps: { value: _vm.customer.phone },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.customer, "phone", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("th", [_vm._v("Website")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.customer.website,
+                          expression: "customer.website"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Enter Your Website"
+                      },
+                      domProps: { value: _vm.customer.website },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.customer, "website", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c(
+                    "th",
+                    [
+                      _c("router-link", { attrs: { to: "/customers" } }, [
+                        _vm._v("Cancel")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _vm._m(0)
+                ]),
+                _vm._v(" "),
+                _vm.errors
+                  ? _c("div", { staticClass: "errors" }, [
+                      _c(
+                        "ul",
+                        [
+                          _vm._l(_vm.errors, function(fieldsError, fieldName) {
+                            return _c("li", { key: fieldName }, [
+                              _c("strong", [_vm._v(_vm._s(fieldName))]),
+                              _vm._v(
+                                " " +
+                                  _vm._s(fieldsError.join("\n")) +
+                                  "\n                    "
+                              )
+                            ])
+                          }),
+                          _vm._v(" "),
+                          _vm.error_backend
+                            ? _c("li", [
+                                _c("strong", [
+                                  _vm._v(_vm._s(_vm.error_backend))
+                                ])
+                              ])
+                            : _vm._e()
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            ]
+          : [
+              _c("div", [
+                _vm._v("\n                Customer not found !\n            ")
+              ])
+            ]
+      ],
+      2
     )
   ])
 }
@@ -56195,7 +56214,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 
 
@@ -56243,7 +56262,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     created: function created() {
         // kiểm tra xem có rỗng hay không
         var customers = this.$store.getters.customers;
-        if (!customers.length) {
+        if (Object.keys(customers).length == 0) {
             this.$store.dispatch('actionCustomerFetch', 1);
         }
     },
@@ -56628,7 +56647,7 @@ exports.push([module.i, "\n.errors {\r\n    background: lightcoral;\r\n    borde
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_validate_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_validate_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_validate_js__);
@@ -56705,12 +56724,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         };
     },
 
-    computed: {
-        // có vẻ hơi dư thừa đoạn này xxx
-        currentUser: function currentUser() {
-            return this.$store.getters.currentUser;
-        }
-    },
     methods: {
         add: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
@@ -57127,7 +57140,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     name: 'view_customer',
     mounted: function mounted() {
         var customers = this.$store.getters.customers;
-        if (!customers.length) {
+        if (Object.keys(customers).length == 0) {
             this.$store.dispatch('actionCustomerFetch');
         }
     },
@@ -58056,7 +58069,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(95);
 
@@ -58168,13 +58181,14 @@ var actions = {
                         case 4:
                             response = _context2.sent;
 
+                            console.log(response);
                             if (response.data) {
                                 commit(CUSTOMER_ADD, response.data.customer);
                             }
 
                             return _context2.abrupt('return', response);
 
-                        case 7:
+                        case 8:
                         case 'end':
                             return _context2.stop();
                     }
@@ -58380,7 +58394,7 @@ function editCustomer(id, customer) {
         return error;
     });
 }
-function deleteCustomer(id) {
+function deleteCustomer(id, page) {
     return axios.delete("/api/customers/" + id + "?page=" + page).then(function (response) {
         return response;
     }).catch(function (error) {
