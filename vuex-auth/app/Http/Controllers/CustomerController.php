@@ -61,7 +61,7 @@ class CustomerController extends Controller
         try {
             $customer = Customer::where('id', $id)
                         ->update( $request->only(["name", "email", "phone", "website"]) );
-            
+
             $customer = Customer::find($id);
             return response()->json([
                 "data" => [
@@ -78,7 +78,7 @@ class CustomerController extends Controller
             ], 200);
         }
     }
-    
+
     public function delete ( $id, Request $request ) {
         try {
             $customer = Customer::find($id)->delete();

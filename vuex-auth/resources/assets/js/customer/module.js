@@ -54,9 +54,7 @@ const actions = {
     async actionCustomerFetch({ commit }, page) {
         try {
             let response = await getCustomerList(page)
-            // if (response.status == 200 ) {
-                return commit(CUSTOMER_FETCH, response.data.customers)
-            // }
+            return commit(CUSTOMER_FETCH, response.data.customers)
         } catch (error) {
             return error;
         }
@@ -64,20 +62,17 @@ const actions = {
 
     async actionCustomerAdd({ commit, state }, customer) {
         let page = state.customers.current_page;
-        console.log(state.customers.current_page)
         let response = await addCustomer(customer, page);
-        console.log(response);
-        if ( response.data ) {
+        if ( response.data.length > 0 ) {
             commit(CUSTOMER_ADD, response.data.customer);
         }
 
         return response;
     },
     async actionCustomerEdit ({ commit }, {id, customer} ) {
-        // console.log(id, customer);
         let response = await editCustomer(id, customer);
-        
-        if ( response.data ) {
+
+        if ( response.data.length > 0 ) {
             commit(CUSTOMER_EDIT, response.data.customer);
         }
         return response;
@@ -94,14 +89,6 @@ const actions = {
             return error;
         }
     },
-
-    // async actionCustomerChangeStatus({ commit }, { id, status }) {
-    //     let response = await getCustomer(id, { status })
-
-    //     if (response.status == 200) {
-    //         return commit(CUSTOMER_TOGGLE_STATUS, id)
-    //     }
-    // },
 
     async actionCustomerDelete({ commit, state }, id) {
         let page = state.customers.current_page;

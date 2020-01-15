@@ -45,6 +45,13 @@
                         </li>
                     </ul>
                 </div>
+                <div class="errors" v-if="error_backend">
+                    <ul>
+                        <li>
+                            <strong>{{ error_backend }}</strong>
+                        </li>
+                    </ul>
+                </div>
             </table>
             </template>
             <template v-else>
@@ -80,17 +87,17 @@ export default {
             const constraints = this.getConstraints();
 
             const errors = validate(this.customer, constraints);
-            
+
             if(errors) {
                 this.errors = errors;
                 return;
             }
 
             this.$store.dispatch('togger_loadding');
-            let result_add = await this.$store.dispatch('actionCustomerEdit', {'id' : this.$route.params.id, 'customer' : this.customer} );
+            let result = await this.$store.dispatch('actionCustomerEdit', {'id' : this.$route.params.id, 'customer' : this.customer} );
             this.$store.dispatch('togger_loadding');
-            if ( result_add.errors.length > 0 ) {
-                this.error_backend = result_add.errors;
+            if ( result.errors && Object.keys(result.errors).length > 0 ) {
+                this.error_backend = result.errors.message;
             } else {
                 this.$router.push('/customers');
             }

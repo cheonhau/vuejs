@@ -46,6 +46,13 @@
                 </li>
             </ul>
         </div>
+        <div class="errors" v-if="error_backend">
+            <ul>
+                <li>
+                    <strong>{{ error_backend }}</strong>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -81,11 +88,11 @@
                 }
 
                 this.$store.dispatch('togger_loadding');
-                let result_add = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
+                let result = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
                 this.$store.dispatch('togger_loadding');
-
-                if ( result_add.errors.length > 0 ) {
-                    this.error_backend = result_add.errors;
+                if ( result.errors && Object.keys(result.errors).length > 0 ) {
+                    this.error_backend = result.errors.message;
+                    return;
                 } else {
                     this.$router.push('/customers');
                 }

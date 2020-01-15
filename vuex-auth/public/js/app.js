@@ -12008,9 +12008,9 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {/*!
- * validate.js 0.13.1
+ * validate.js 0.12.0
  *
- * (c) 2013-2019 Nicklas Ansman, 2013 Wrapp
+ * (c) 2013-2017 Nicklas Ansman, 2013 Wrapp
  * Validate.js may be freely distributed under the MIT license.
  * For all details and documentation:
  * http://validatejs.org/
@@ -12061,8 +12061,8 @@ module.exports = Cancel;
     // The toString function will allow it to be coerced into a string
     version: {
       major: 0,
-      minor: 13,
-      patch: 1,
+      minor: 12,
+      patch: 0,
       metadata: null,
       toString: function() {
         var version = v.format("%{major}.%{minor}.%{patch}", v.version);
@@ -12396,10 +12396,6 @@ module.exports = Cancel;
       }
 
       if (v.isObject(str)) {
-        if (!v.isDefined(str.toString)) {
-          return JSON.stringify(str);
-        }
-
         return str.toString();
       }
 
@@ -12543,7 +12539,7 @@ module.exports = Cancel;
           continue;
         }
 
-        var name = input.name.replace(/\./g, "\\\\.");
+        name = input.name.replace(/\./g, "\\\\.");
         value = v.sanitizeFormValue(input.value, options);
         if (input.type === "number") {
           value = value ? +value : null;
@@ -12579,7 +12575,7 @@ module.exports = Cancel;
             }
           }
         } else {
-          var _val = typeof input.options[input.selectedIndex] !== 'undefined' ? input.options[input.selectedIndex].value : /* istanbul ignore next */ '';
+          var _val = typeof input.options[input.selectedIndex] !== 'undefined' ? input.options[input.selectedIndex].value : '';
           value = v.sanitizeFormValue(_val, options);
         }
         values[input.name] = value;
@@ -12801,6 +12797,7 @@ module.exports = Cancel;
       value = tokenizer(value);
       var length = value.length;
       if(!v.isNumber(length)) {
+        v.error(v.format("Attribute %{attr} has a non numeric value for `length`", {attr: attribute}));
         return options.message || this.notValid || "has an incorrect length";
       }
 
@@ -13051,9 +13048,6 @@ module.exports = Cancel;
         return;
       }
       var message = options.message || this.message || "^%{value} is restricted";
-      if (v.isString(options.within[value])) {
-        value = options.within[value];
-      }
       return v.format(message, {value: value});
     },
     email: v.extend(function(value, options) {
@@ -13070,7 +13064,7 @@ module.exports = Cancel;
         return message;
       }
     }, {
-      PATTERN: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i
+      PATTERN: /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i
     }),
     equality: function(value, options, attribute, attributes, globalOptions) {
       if (!v.isDefined(value)) {
@@ -13101,6 +13095,7 @@ module.exports = Cancel;
         return v.format(message, {attribute: prettify(options.attribute)});
       }
     },
+
     // A URL validator that is used to validate URLs with the ability to
     // restrict schemes and some domains.
     url: function(value, options) {
@@ -13112,8 +13107,8 @@ module.exports = Cancel;
 
       var message = options.message || this.message || "is not a valid url"
         , schemes = options.schemes || this.schemes || ['http', 'https']
-        , allowLocal = options.allowLocal || this.allowLocal || false
-        , allowDataUrl = options.allowDataUrl || this.allowDataUrl || false;
+        , allowLocal = options.allowLocal || this.allowLocal || false;
+
       if (!v.isString(value)) {
         return message;
       }
@@ -13162,73 +13157,11 @@ module.exports = Cancel;
         "(?:[/?#]\\S*)?" +
       "$";
 
-      if (allowDataUrl) {
-        // RFC 2397
-        var mediaType = "\\w+\\/[-+.\\w]+(?:;[\\w=]+)*";
-        var urlchar = "[A-Za-z0-9-_.!~\\*'();\\/?:@&=+$,%]*";
-        var dataurl = "data:(?:"+mediaType+")?(?:;base64)?,"+urlchar;
-        regex = "(?:"+regex+")|(?:^"+dataurl+"$)";
-      }
-
       var PATTERN = new RegExp(regex, 'i');
       if (!PATTERN.exec(value)) {
         return message;
       }
-    },
-    type: v.extend(function(value, originalOptions, attribute, attributes, globalOptions) {
-      if (v.isString(originalOptions)) {
-        originalOptions = {type: originalOptions};
-      }
-
-      if (!v.isDefined(value)) {
-        return;
-      }
-
-      var options = v.extend({}, this.options, originalOptions);
-
-      var type = options.type;
-      if (!v.isDefined(type)) {
-        throw new Error("No type was specified");
-      }
-
-      var check;
-      if (v.isFunction(type)) {
-        check = type;
-      } else {
-        check = this.types[type];
-      }
-
-      if (!v.isFunction(check)) {
-        throw new Error("validate.validators.type.types." + type + " must be a function.");
-      }
-
-      if (!check(value, options, attribute, attributes, globalOptions)) {
-        var message = originalOptions.message ||
-          this.messages[type] ||
-          this.message ||
-          options.message ||
-          (v.isFunction(type) ? "must be of the correct type" : "must be of type %{type}");
-
-        if (v.isFunction(message)) {
-          message = message(value, originalOptions, attribute, attributes, globalOptions);
-        }
-
-        return v.format(message, {attribute: v.prettify(attribute), type: type});
-      }
-    }, {
-      types: {
-        object: function(value) {
-          return v.isObject(value) && !v.isArray(value);
-        },
-        array: v.isArray,
-        integer: v.isInteger,
-        number: v.isNumber,
-        string: v.isString,
-        date: v.isDate,
-        boolean: v.isBoolean
-      },
-      messages: {}
-    })
+    }
   };
 
   validate.formatters = {
@@ -13449,7 +13382,9 @@ axios.interceptors.response.use(function (response) {
         }
         return {
             data: {},
-            errors: message
+            errors: {
+                'message': message
+            }
         };
     } else {
         console.log(error.response);
@@ -54984,6 +54919,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -55005,7 +54947,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     methods: {
         edit: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-                var constraints, errors, result_add;
+                var constraints, errors, result;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -55031,11 +54973,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 return this.$store.dispatch('actionCustomerEdit', { 'id': this.$route.params.id, 'customer': this.customer });
 
                             case 10:
-                                result_add = _context.sent;
+                                result = _context.sent;
 
                                 this.$store.dispatch('togger_loadding');
-                                if (result_add.errors.length > 0) {
-                                    this.error_backend = result_add.errors;
+                                if (result.errors && Object.keys(result.errors).length > 0) {
+                                    this.error_backend = result.errors.message;
                                 } else {
                                     this.$router.push('/customers');
                                 }
@@ -56049,6 +55991,16 @@ var render = function() {
                         2
                       )
                     ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.error_backend
+                  ? _c("div", { staticClass: "errors" }, [
+                      _c("ul", [
+                        _c("li", [
+                          _c("strong", [_vm._v(_vm._s(_vm.error_backend))])
+                        ])
+                      ])
+                    ])
                   : _vm._e()
               ])
             ]
@@ -56146,7 +56098,7 @@ var content = __webpack_require__(61);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("7f66f6bc", content, false, {});
+var update = __webpack_require__(4)("75dd4295", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -56170,7 +56122,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.btn-wrapper[data-v-3b921718] {\r\n    text-align: right;\r\n    margin-bottom: 20px;\n}\ntable tbody tr td[data-v-3b921718]:nth-child(4) {\r\n    min-width: 220px;\n}\r\n", ""]);
+exports.push([module.i, "\n.btn-wrapper[data-v-3b921718] {\n    text-align: right;\n    margin-bottom: 20px;\n}\ntable tbody tr td[data-v-3b921718]:nth-child(4) {\n    min-width: 220px;\n}\n", ""]);
 
 // exports
 
@@ -56612,7 +56564,7 @@ var content = __webpack_require__(70);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("410b4507", content, false, {});
+var update = __webpack_require__(4)("9b7d0698", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -56636,7 +56588,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.errors {\r\n    background: lightcoral;\r\n    border-radius:5px;\r\n    padding: 21px 0 2px 0;\n}\r\n", ""]);
+exports.push([module.i, "\n.errors {\n    background: lightcoral;\n    border-radius:5px;\n    padding: 21px 0 2px 0;\n}\n", ""]);
 
 // exports
 
@@ -56655,6 +56607,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -56727,7 +56686,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     methods: {
         add: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-                var constraints, errors, result_add;
+                var constraints, errors, result;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -56753,17 +56712,22 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 return this.$store.dispatch('actionCustomerAdd', this.$data.customer);
 
                             case 10:
-                                result_add = _context.sent;
+                                result = _context.sent;
 
                                 this.$store.dispatch('togger_loadding');
 
-                                if (result_add.errors.length > 0) {
-                                    this.error_backend = result_add.errors;
-                                } else {
-                                    this.$router.push('/customers');
+                                if (!(result.errors && Object.keys(result.errors).length > 0)) {
+                                    _context.next = 17;
+                                    break;
                                 }
 
-                            case 13:
+                                this.error_backend = result.errors.message;
+                                return _context.abrupt('return');
+
+                            case 17:
+                                this.$router.push('/customers');
+
+                            case 18:
                             case 'end':
                                 return _context.stop();
                         }
@@ -56980,6 +56944,14 @@ var render = function() {
             2
           )
         ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.error_backend
+      ? _c("div", { staticClass: "errors" }, [
+          _c("ul", [
+            _c("li", [_c("strong", [_vm._v(_vm._s(_vm.error_backend))])])
+          ])
+        ])
       : _vm._e()
   ])
 }
@@ -57067,7 +57039,7 @@ var content = __webpack_require__(75);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("7f3cd0b7", content, false, {});
+var update = __webpack_require__(4)("34cd8eaa", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -57091,7 +57063,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.customer-view[data-v-32a4459f] {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\n}\n.user-img[data-v-32a4459f] {\r\n    -webkit-box-flex: 1;\r\n        -ms-flex: 1;\r\n            flex: 1;\n}\n.user-img img[data-v-32a4459f] {\r\n    max-width: 160px;\n}\n.user-info[data-v-32a4459f] {\r\n    -webkit-box-flex: 3;\r\n        -ms-flex: 3;\r\n            flex: 3;\r\n    overflow-x: scroll;\n}\r\n", ""]);
+exports.push([module.i, "\n.customer-view[data-v-32a4459f] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.user-img[data-v-32a4459f] {\n    -webkit-box-flex: 1;\n        -ms-flex: 1;\n            flex: 1;\n}\n.user-img img[data-v-32a4459f] {\n    max-width: 160px;\n}\n.user-info[data-v-32a4459f] {\n    -webkit-box-flex: 3;\n        -ms-flex: 3;\n            flex: 3;\n    overflow-x: scroll;\n}\n", ""]);
 
 // exports
 
@@ -57303,7 +57275,7 @@ var content = __webpack_require__(80);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("78814e30", content, false, {});
+var update = __webpack_require__(4)("73b4c5c6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -57327,7 +57299,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.error[data-v-1260679c] {\r\n    text-align: center;\r\n    color: red;\n}\r\n", ""]);
+exports.push([module.i, "\n.error[data-v-1260679c] {\n    text-align: center;\n    color: red;\n}\n", ""]);
 
 // exports
 
@@ -57940,7 +57912,7 @@ var content = __webpack_require__(90);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("6719d2d3", content, false, {});
+var update = __webpack_require__(4)("acf8699a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -57964,7 +57936,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n#container-loading {\r\n    background-color: #000000;\r\n    width: 100%;\r\n    height: 100%;\r\n    position: fixed;\r\n    z-index: 99999;\r\n    opacity: 0.3;\r\n    display: none;\n}\nsection {\r\n    text-align: center;\r\n    position: fixed;\r\n    left: 0;\r\n    right: 0;\r\n    z-index: 999999;\r\n    top: 50%;\r\n    margin-top: -60px;\n}\n@media only screen and (max-width: 600px) {\nsection {\r\n        min-width: 350px;\n}\n}\n.loader {\r\n    position: relative;\r\n    width: 60px;\r\n    height: 60px;\r\n    border-radius: 50%;\r\n    margin: 75px;\r\n    display: inline-block;\r\n    vertical-align: middle;\n}\r\n/*LOADER-1*/\n.loader-1 .loader-outter {\r\n    position: absolute;\r\n    border: 4px solid #ffffff;\r\n    border-left-color: transparent;\r\n    border-bottom: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    border-radius: 50%;\r\n    -webkit-animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\r\n    animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n.loader-1 .loader-inner {\r\n    position: absolute;\r\n    border: 4px solid #ffffff;\r\n    border-radius: 50%;\r\n    width: 40px;\r\n    height: 40px;\r\n    left: calc(50% - 20px);\r\n    top: calc(50% - 20px);\r\n    border-right: 0;\r\n    border-top-color: transparent;\r\n    -webkit-animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\r\n    animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\r\n\r\n/* ----------------     KEYFRAMES    ----------------- */\n@-webkit-keyframes loader-1-outter {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(360deg);\r\n        transform: rotate(360deg);\n}\n}\n@keyframes loader-1-outter {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(360deg);\r\n        transform: rotate(360deg);\n}\n}\n@-webkit-keyframes loader-1-inner {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(-360deg);\r\n        transform: rotate(-360deg);\n}\n}\n@keyframes loader-1-inner {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(-360deg);\r\n        transform: rotate(-360deg);\n}\n}\r\n", ""]);
+exports.push([module.i, "\n#container-loading {\n    background-color: #000000;\n    width: 100%;\n    height: 100%;\n    position: fixed;\n    z-index: 99999;\n    opacity: 0.3;\n    display: none;\n}\nsection {\n    text-align: center;\n    position: fixed;\n    left: 0;\n    right: 0;\n    z-index: 999999;\n    top: 50%;\n    margin-top: -60px;\n}\n@media only screen and (max-width: 600px) {\nsection {\n        min-width: 350px;\n}\n}\n.loader {\n    position: relative;\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    margin: 75px;\n    display: inline-block;\n    vertical-align: middle;\n}\n/*LOADER-1*/\n.loader-1 .loader-outter {\n    position: absolute;\n    border: 4px solid #ffffff;\n    border-left-color: transparent;\n    border-bottom: 0;\n    width: 100%;\n    height: 100%;\n    border-radius: 50%;\n    -webkit-animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n    animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n.loader-1 .loader-inner {\n    position: absolute;\n    border: 4px solid #ffffff;\n    border-radius: 50%;\n    width: 40px;\n    height: 40px;\n    left: calc(50% - 20px);\n    top: calc(50% - 20px);\n    border-right: 0;\n    border-top-color: transparent;\n    -webkit-animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n    animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n\n/* ----------------     KEYFRAMES    ----------------- */\n@-webkit-keyframes loader-1-outter {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(360deg);\n        transform: rotate(360deg);\n}\n}\n@keyframes loader-1-outter {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(360deg);\n        transform: rotate(360deg);\n}\n}\n@-webkit-keyframes loader-1-inner {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(-360deg);\n        transform: rotate(-360deg);\n}\n}\n@keyframes loader-1-inner {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(-360deg);\n        transform: rotate(-360deg);\n}\n}\n", ""]);
 
 // exports
 
@@ -58173,22 +58145,19 @@ var actions = {
                     switch (_context2.prev = _context2.next) {
                         case 0:
                             page = state.customers.current_page;
-
-                            console.log(state.customers.current_page);
-                            _context2.next = 4;
+                            _context2.next = 3;
                             return Object(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* addCustomer */])(customer, page);
 
-                        case 4:
+                        case 3:
                             response = _context2.sent;
 
-                            console.log(response);
-                            if (response.data) {
+                            if (response.data.length > 0) {
                                 commit(CUSTOMER_ADD, response.data.customer);
                             }
 
                             return _context2.abrupt('return', response);
 
-                        case 8:
+                        case 6:
                         case 'end':
                             return _context2.stop();
                     }
@@ -58219,7 +58188,7 @@ var actions = {
                             response = _context3.sent;
 
 
-                            if (response.data) {
+                            if (response.data.length > 0) {
                                 commit(CUSTOMER_EDIT, response.data.customer);
                             }
                             return _context3.abrupt('return', response);
@@ -58298,16 +58267,6 @@ var actions = {
 
         return actionCustomerGet;
     }(),
-
-
-    // async actionCustomerChangeStatus({ commit }, { id, status }) {
-    //     let response = await getCustomer(id, { status })
-
-    //     if (response.status == 200) {
-    //         return commit(CUSTOMER_TOGGLE_STATUS, id)
-    //     }
-    // },
-
     actionCustomerDelete: function () {
         var _ref13 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6(_ref12, id) {
             var commit = _ref12.commit,
