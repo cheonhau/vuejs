@@ -27,6 +27,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>BirthDay</th>
+                    <td>
+                        <datepicker v-model="customer.birth_day" placeholder="Customer Birthday" @selected="change_date" input-class="form-control" format="yyyy-MM-dd"></datepicker>
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         <router-link to="/customers" class="btn">Cancel</router-link>
                     </td>
@@ -58,17 +64,23 @@
 
 <script>
     import validate from 'validate.js';
-
+    import Datepicker from 'vuejs-datepicker';
+    var moment = require('moment');
     export default {
         name: 'new',
+        components: {
+            Datepicker
+        },
         data() {
             return {
                 customer: {
                     name: '',
                     email: '',
                     phone: '',
-                    website: ''
+                    website: '',
+                    birth_day : '',
                 },
+                moment : moment,
                 errors: null,
                 error_backend : null
             };
@@ -86,7 +98,7 @@
                     this.errors = errors;
                     return;
                 }
-
+                console.log(this.$data.customer);
                 this.$store.dispatch('togger_loadding');
                 let result = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
                 this.$store.dispatch('togger_loadding');
@@ -123,6 +135,9 @@
                         url: true
                     }
                 };
+            },
+            change_date (date) {
+                this.customer.birth_day = moment(date).format('YYYY MM DD');
             }
         }
     }
