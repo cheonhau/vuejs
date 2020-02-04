@@ -35,7 +35,7 @@ class CustomerController extends Controller
     public function new ( CreateCustomerRequest $request ) {
         try {
             // return $request->get('customer')['name'];
-            $customer = Customer::create( $request->only(["name", "email", "phone", "website"]) );
+            $customer = Customer::create( $request->only(["name", "email", "phone", "website", "birth_day"]) );
             $currentPage = $request->get('page', 1);
             // Paginator::currentPageResolver(function () use ($currentPage) {
             //     return $currentPage;
