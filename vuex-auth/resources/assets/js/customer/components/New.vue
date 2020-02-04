@@ -98,7 +98,6 @@
                     this.errors = errors;
                     return;
                 }
-                
                 this.$store.dispatch('togger_loadding');
                 let customer_data = {
                     name: this.$data.customer.name,
@@ -145,8 +144,7 @@
                 };
             },
             change_date (date) {
-                this.$data.customer.birth_day = moment(date).format('YYYY MM DD');
-                console.log(this.$data.customer.birth_day)
+                this.customer.birth_day = moment(date).format('YYYY MM DD');
             }
         }
     }
