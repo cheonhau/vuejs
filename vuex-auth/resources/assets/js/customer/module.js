@@ -61,7 +61,7 @@ const actions = {
     },
 
     async actionCustomerAdd({ commit, state }, customer) {
-        let page = state.customers.current_page;
+        let page = typeof state.customers.current_page != 'undefined' ? state.customers.current_page : 1;
         let response = await addCustomer(customer, page);
         if ( response.data.length > 0 ) {
             commit(CUSTOMER_ADD, response.data.customer);
@@ -91,7 +91,7 @@ const actions = {
     },
 
     async actionCustomerDelete({ commit, state }, id) {
-        let page = state.customers.current_page;
+        let page = typeof state.customers.current_page != 'undefined' ? state.customers.current_page : 1;
         let response = await deleteCustomer(id, page)
         if ( response.data ) {
             commit(CUSTOMER_DELETE, response.data.customer);

@@ -29,7 +29,7 @@
                 <tr>
                     <th>BirthDay</th>
                     <td>
-                        <datepicker v-model="customer.birth_day" placeholder="Customer Birthday" @selected="change_date" input-class="form-control" format="yyyy-MM-dd"></datepicker>
+                        <datepicker :disabled-dates="disabledDates" v-model="customer.birth_day" placeholder="Customer Birthday" @selected="change_date" input-class="form-control" format="yyyy-MM-dd"></datepicker>
                     </td>
                 </tr>
                 <tr>
@@ -80,6 +80,9 @@
                     website: '',
                     birth_day : '',
                 },
+                disabledDates: {
+                    from: new Date(),
+                },
                 moment : moment,
                 errors: null,
                 error_backend : null
@@ -99,15 +102,8 @@
                     return;
                 }
                 this.$store.dispatch('togger_loadding');
-                let customer_data = {
-                    name: this.$data.customer.name,
-                    email: this.$data.customer.email,
-                    phone: this.$data.customer.phone,
-                    website: this.$data.customer.website,
-                    birth_day : moment(this.$data.customer.birth_day).format('YYYY-MM-DD'),
-                };
-                console.log(customer_data);
-                let result = await this.$store.dispatch('actionCustomerAdd', customer_data);
+                this.$data.customer.birth_day = moment(this.$data.customer.birth_day).format('YYYY-MM-DD');
+                let result = await this.$store.dispatch('actionCustomerAdd', this.$data.customer);
                 this.$store.dispatch('togger_loadding');
                 if ( result.errors && Object.keys(result.errors).length > 0 ) {
                     this.error_backend = result.errors.message;

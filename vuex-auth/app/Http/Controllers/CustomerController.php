@@ -37,6 +37,12 @@ class CustomerController extends Controller
             // return $request->get('customer')['name'];
             $customer = Customer::create( $request->only(["name", "email", "phone", "website", "birth_day"]) );
             $currentPage = $request->get('page', 1);
+            return response()->json([
+                "data" => [
+                    "customer" => $currentPage
+                ],
+                "errors" => []
+            ], 200);
             // Paginator::currentPageResolver(function () use ($currentPage) {
             //     return $currentPage;
             // });
