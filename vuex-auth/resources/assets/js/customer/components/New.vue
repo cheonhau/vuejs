@@ -29,7 +29,13 @@
                 <tr>
                     <th>BirthDay</th>
                     <td>
-                        <datepicker :disabled-dates="disabledDates" v-model="customer.birth_day" placeholder="Customer Birthday" @selected="change_date" input-class="form-control" format="yyyy-MM-dd"></datepicker>
+                        <datepicker :disabled-dates="disabledBirthDates" v-model="customer.birth_day" placeholder="Customer Birthday" input-class="form-control" format="yyyy-MM-dd" @selected="change_birthday"></datepicker>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Die day</th>
+                    <td>
+                        <datepicker :disabled-dates="disabledDieDates" v-model="customer.die_day" placeholder="Customer die day" input-class="form-control" format="yyyy-MM-dd" @selected="change_dieday"></datepicker>
                     </td>
                 </tr>
                 <tr>
@@ -79,15 +85,24 @@
                     phone: '',
                     website: '',
                     birth_day : '',
+                    die_day : '',
                 },
-                disabledDates: {
-                    from: new Date(),
+                disabledBirthDates: {
+                    to: this.sub_date(1),
+                },
+                disabledDieDates: {
+                    to: this.sub_date(1),
+                },
+                dateCustomer : {
+                    birth_day : new Date(),
+                    die_day : new Date(),
                 },
                 moment : moment,
                 errors: null,
                 error_backend : null
             };
         },
+
         methods: {
             async add() {
                 this.errors = null;
@@ -139,8 +154,18 @@
                     }
                 };
             },
-            change_date (date) {
-                this.customer.birth_day = moment(date).format('YYYY MM DD');
+            change_birthday (date) {
+                if ( date >= new Date() ) {
+                    this.disabledDieDates.to = date;
+                } else {
+                    this.disabledDieDates.to = this.sub_date(1);
+                }
+            },
+            change_dieday (date) {
+
+            },
+            sub_date (date) {
+                return new Date((moment(new Date()).subtract(date , 'day')).toISOString());
             }
         }
     }

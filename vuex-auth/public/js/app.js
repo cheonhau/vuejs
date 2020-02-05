@@ -72905,7 +72905,7 @@ var content = __webpack_require__(189);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("7f66f6bc", content, false, {});
+var update = __webpack_require__(5)("75dd4295", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -72929,7 +72929,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.btn-wrapper[data-v-3b921718] {\r\n    text-align: right;\r\n    margin-bottom: 20px;\n}\ntable tbody tr td[data-v-3b921718]:nth-child(4) {\r\n    min-width: 220px;\n}\r\n", ""]);
+exports.push([module.i, "\n.btn-wrapper[data-v-3b921718] {\n    text-align: right;\n    margin-bottom: 20px;\n}\ntable tbody tr td[data-v-3b921718]:nth-child(4) {\n    min-width: 220px;\n}\n", ""]);
 
 // exports
 
@@ -73371,7 +73371,7 @@ var content = __webpack_require__(198);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("410b4507", content, false, {});
+var update = __webpack_require__(5)("9b7d0698", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -73395,7 +73395,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.errors {\r\n    background: lightcoral;\r\n    border-radius:5px;\r\n    padding: 21px 0 2px 0;\n}\r\n", ""]);
+exports.push([module.i, "\n.errors {\n    background: lightcoral;\n    border-radius:5px;\n    padding: 21px 0 2px 0;\n}\n", ""]);
 
 // exports
 
@@ -73479,6 +73479,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -73495,16 +73501,25 @@ var moment = __webpack_require__(0);
                 email: '',
                 phone: '',
                 website: '',
-                birth_day: ''
+                birth_day: '',
+                die_day: ''
             },
-            disabledDates: {
-                from: new Date()
+            disabledBirthDates: {
+                to: this.sub_date(1)
+            },
+            disabledDieDates: {
+                to: this.sub_date(1)
+            },
+            dateCustomer: {
+                birth_day: new Date(),
+                die_day: new Date()
             },
             moment: moment,
             errors: null,
             error_backend: null
         };
     },
+
 
     methods: {
         add: function () {
@@ -73591,8 +73606,16 @@ var moment = __webpack_require__(0);
                 }
             };
         },
-        change_date: function change_date(date) {
-            this.customer.birth_day = moment(date).format('YYYY MM DD');
+        change_birthday: function change_birthday(date) {
+            if (date >= new Date()) {
+                this.disabledDieDates.to = date;
+            } else {
+                this.disabledDieDates.to = this.sub_date(1);
+            }
+        },
+        change_dieday: function change_dieday(date) {},
+        sub_date: function sub_date(date) {
+            return new Date(moment(new Date()).subtract(date, 'day').toISOString());
         }
     }
 });
@@ -76458,18 +76481,45 @@ var render = function() {
               [
                 _c("datepicker", {
                   attrs: {
-                    "disabled-dates": _vm.disabledDates,
+                    "disabled-dates": _vm.disabledBirthDates,
                     placeholder: "Customer Birthday",
                     "input-class": "form-control",
                     format: "yyyy-MM-dd"
                   },
-                  on: { selected: _vm.change_date },
+                  on: { selected: _vm.change_birthday },
                   model: {
                     value: _vm.customer.birth_day,
                     callback: function($$v) {
                       _vm.$set(_vm.customer, "birth_day", $$v)
                     },
                     expression: "customer.birth_day"
+                  }
+                })
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("th", [_vm._v("Die day")]),
+            _vm._v(" "),
+            _c(
+              "td",
+              [
+                _c("datepicker", {
+                  attrs: {
+                    "disabled-dates": _vm.disabledDieDates,
+                    placeholder: "Customer die day",
+                    "input-class": "form-control",
+                    format: "yyyy-MM-dd"
+                  },
+                  on: { selected: _vm.change_dieday },
+                  model: {
+                    value: _vm.customer.die_day,
+                    callback: function($$v) {
+                      _vm.$set(_vm.customer, "die_day", $$v)
+                    },
+                    expression: "customer.die_day"
                   }
                 })
               ],
@@ -76612,7 +76662,7 @@ var content = __webpack_require__(205);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("7f3cd0b7", content, false, {});
+var update = __webpack_require__(5)("34cd8eaa", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -76636,7 +76686,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.customer-view[data-v-32a4459f] {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\n}\n.user-img[data-v-32a4459f] {\r\n    -webkit-box-flex: 1;\r\n        -ms-flex: 1;\r\n            flex: 1;\n}\n.user-img img[data-v-32a4459f] {\r\n    max-width: 160px;\n}\n.user-info[data-v-32a4459f] {\r\n    -webkit-box-flex: 3;\r\n        -ms-flex: 3;\r\n            flex: 3;\r\n    overflow-x: scroll;\n}\r\n", ""]);
+exports.push([module.i, "\n.customer-view[data-v-32a4459f] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.user-img[data-v-32a4459f] {\n    -webkit-box-flex: 1;\n        -ms-flex: 1;\n            flex: 1;\n}\n.user-img img[data-v-32a4459f] {\n    max-width: 160px;\n}\n.user-info[data-v-32a4459f] {\n    -webkit-box-flex: 3;\n        -ms-flex: 3;\n            flex: 3;\n    overflow-x: scroll;\n}\n", ""]);
 
 // exports
 
@@ -76848,7 +76898,7 @@ var content = __webpack_require__(210);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("78814e30", content, false, {});
+var update = __webpack_require__(5)("73b4c5c6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -76872,7 +76922,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.error[data-v-1260679c] {\r\n    text-align: center;\r\n    color: red;\n}\r\n", ""]);
+exports.push([module.i, "\n.error[data-v-1260679c] {\n    text-align: center;\n    color: red;\n}\n", ""]);
 
 // exports
 
@@ -77485,7 +77535,7 @@ var content = __webpack_require__(220);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("6719d2d3", content, false, {});
+var update = __webpack_require__(5)("acf8699a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -77509,7 +77559,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n#container-loading {\r\n    background-color: #000000;\r\n    width: 100%;\r\n    height: 100%;\r\n    position: fixed;\r\n    z-index: 99999;\r\n    opacity: 0.3;\r\n    display: none;\n}\nsection {\r\n    text-align: center;\r\n    position: fixed;\r\n    left: 0;\r\n    right: 0;\r\n    z-index: 999999;\r\n    top: 50%;\r\n    margin-top: -60px;\n}\n@media only screen and (max-width: 600px) {\nsection {\r\n        min-width: 350px;\n}\n}\n.loader {\r\n    position: relative;\r\n    width: 60px;\r\n    height: 60px;\r\n    border-radius: 50%;\r\n    margin: 75px;\r\n    display: inline-block;\r\n    vertical-align: middle;\n}\r\n/*LOADER-1*/\n.loader-1 .loader-outter {\r\n    position: absolute;\r\n    border: 4px solid #ffffff;\r\n    border-left-color: transparent;\r\n    border-bottom: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    border-radius: 50%;\r\n    -webkit-animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\r\n    animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n.loader-1 .loader-inner {\r\n    position: absolute;\r\n    border: 4px solid #ffffff;\r\n    border-radius: 50%;\r\n    width: 40px;\r\n    height: 40px;\r\n    left: calc(50% - 20px);\r\n    top: calc(50% - 20px);\r\n    border-right: 0;\r\n    border-top-color: transparent;\r\n    -webkit-animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\r\n    animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\r\n\r\n/* ----------------     KEYFRAMES    ----------------- */\n@-webkit-keyframes loader-1-outter {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(360deg);\r\n        transform: rotate(360deg);\n}\n}\n@keyframes loader-1-outter {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(360deg);\r\n        transform: rotate(360deg);\n}\n}\n@-webkit-keyframes loader-1-inner {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(-360deg);\r\n        transform: rotate(-360deg);\n}\n}\n@keyframes loader-1-inner {\n0% {\r\n        -webkit-transform: rotate(0deg);\r\n        transform: rotate(0deg);\n}\n100% {\r\n        -webkit-transform: rotate(-360deg);\r\n        transform: rotate(-360deg);\n}\n}\r\n", ""]);
+exports.push([module.i, "\n#container-loading {\n    background-color: #000000;\n    width: 100%;\n    height: 100%;\n    position: fixed;\n    z-index: 99999;\n    opacity: 0.3;\n    display: none;\n}\nsection {\n    text-align: center;\n    position: fixed;\n    left: 0;\n    right: 0;\n    z-index: 999999;\n    top: 50%;\n    margin-top: -60px;\n}\n@media only screen and (max-width: 600px) {\nsection {\n        min-width: 350px;\n}\n}\n.loader {\n    position: relative;\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    margin: 75px;\n    display: inline-block;\n    vertical-align: middle;\n}\n/*LOADER-1*/\n.loader-1 .loader-outter {\n    position: absolute;\n    border: 4px solid #ffffff;\n    border-left-color: transparent;\n    border-bottom: 0;\n    width: 100%;\n    height: 100%;\n    border-radius: 50%;\n    -webkit-animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n    animation: loader-1-outter 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n.loader-1 .loader-inner {\n    position: absolute;\n    border: 4px solid #ffffff;\n    border-radius: 50%;\n    width: 40px;\n    height: 40px;\n    left: calc(50% - 20px);\n    top: calc(50% - 20px);\n    border-right: 0;\n    border-top-color: transparent;\n    -webkit-animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n    animation: loader-1-inner 1s cubic-bezier(.42, .61, .58, .41) infinite;\n}\n\n/* ----------------     KEYFRAMES    ----------------- */\n@-webkit-keyframes loader-1-outter {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(360deg);\n        transform: rotate(360deg);\n}\n}\n@keyframes loader-1-outter {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(360deg);\n        transform: rotate(360deg);\n}\n}\n@-webkit-keyframes loader-1-inner {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(-360deg);\n        transform: rotate(-360deg);\n}\n}\n@keyframes loader-1-inner {\n0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(-360deg);\n        transform: rotate(-360deg);\n}\n}\n", ""]);
 
 // exports
 
